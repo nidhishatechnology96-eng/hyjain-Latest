@@ -1,0 +1,221 @@
+/* Home carousel responsive height: force container and images to match */
+.home-carousel { height: 80vh; overflow: hidden; }
+.home-carousel .carousel-inner { height: 100%; }
+.home-carousel .carousel-item { height: 100%; }
+.home-carousel-img { height: 100%; object-fit: cover; }
+
+@media (max-width: 768px) {
+  .home-carousel { height: 50vh; }
+}
+
+@media (max-width: 480px) {
+  .home-carousel { height: 30vh; }
+}
+
+
+/* Shared product card styles */
+.product-card { transition: transform .15s ease, box-shadow .15s ease; }
+.product-card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important; }
+.product-img { height: 180px; object-fit: cover; }
+
+/* Category tile polish */
+.category-tile { transition: background-color .15s ease, transform .15s ease; }
+.category-tile:hover { background-color: #f1f5ff; transform: translateY(-2px); }
+
+
+
+/* =========================
+   Global Reset & Base Styles
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+}
+
+/* Smooth transitions for hover effects */
+a, button, .card, .stat-card {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Utility classes */
+.text-success {
+  color: #198754 !important;
+}
+.bg-success {
+  background-color: #198754 !important;
+}
+
+/* =========================
+   Navbar
+========================= */
+.navbar {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   Footer
+========================= */
+footer {
+  background: #212529;
+  color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: auto;
+}
+footer a {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #ffc107;
+}
+
+/* Make footer stick to bottom on short pages */
+.d-flex.flex-column.min-vh-100 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+footer {
+  margin-top: auto;
+}
+
+/* =========================
+   AboutUs Page
+========================= */
+.about-page {
+  background: #fdfdfd;
+}
+
+/* Hero Section */
+.hero-section {
+  transition: transform 0.3s ease;
+}
+.hero-section:hover {
+  transform: translateY(-5px);
+}
+
+/* Feature Cards */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+}
+.feature-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.feature-icon {
+  font-size: 2.5rem;
+}
+
+/* Stats Section */
+.stat-card {
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+}
+.stat-card:hover {
+  transform: scale(1.05);
+}
+.stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   Buttons
+========================= */
+.btn-custom {
+  
+  background: #198754;
+  color: #fff;
+  border-radius: 25px;
+  padding: 8px 20px;
+}
+
+
+.btn-custom:hover {
+  background: #157347;
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+/* 
+contactus.jsx page */
+
+.contact-page {
+  background: #f8f9fa; /* Light Bootstrap background */
+  padding-bottom: 2rem;
+}
+
+/* Card Styling */
+.contact-card {
+  border-radius: 15px;
+  transition: all 0.4s ease;
+}
+.contact-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Form Controls */
+.contact-card .form-control {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+.contact-card .form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+/* Custom Button */
+.btn-custom {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
+.btn-custom:hover {
+  background: linear-gradient(135deg, #20c997, #28a745);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+}
+
+/* Extra Hover Shadow for map iframe */
+.hover-shadow {
+  transition: box-shadow 0.3s ease;
+}
+.hover-shadow:hover {
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+
+
+
+

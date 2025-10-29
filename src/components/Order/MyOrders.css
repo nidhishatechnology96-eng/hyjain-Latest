@@ -1,0 +1,15 @@
+.order-card {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: none;
+}
+
+.star-rating-input .star {
+  font-size: 2rem;
+  color: #d3d3d3; /* Lighter gray for inactive stars */
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.star-rating-input .star.active {
+  color: #ffc107; /* Gold color for active/hovered stars */
+}

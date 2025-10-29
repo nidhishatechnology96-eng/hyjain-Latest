@@ -1,0 +1,169 @@
+/* src/components/NewsAndMedia.css */
+
+.news-page-container {
+  background-color: #f8f9fa; /* A soft background for the whole page */
+}
+
+/* --- Hero Header --- */
+.news-header {
+  padding: 4rem 1rem;
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+}
+
+.news-header h1 {
+  font-family: serif;
+  font-size: 3.5rem;
+  font-weight: 500;
+}
+
+.news-header p {
+  font-size: 1.1rem;
+  color: #adb5bd;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* --- Main Content Area --- */
+.news-content-area {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* --- The Main Grid Layout --- */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* 12-column grid */
+  gap: 2rem;
+}
+
+.news-card {
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+}
+
+.news-card a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.news-card .card-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.news-card .card-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.news-card:hover .card-image {
+  transform: scale(1.05);
+}
+
+.news-card .card-category {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #198754; /* HYJAIN Green */
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.news-card .card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card .card-meta {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.news-card .card-title {
+  font-family: serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+
+/* --- Grid Item Sizing --- */
+.news-card.grid-col-span-6 {
+  grid-column: span 6;
+}
+
+.news-card.grid-col-span-4 {
+  grid-column: span 4;
+}
+
+/* Adjust title size for larger cards */
+.news-card.grid-col-span-6 .card-title {
+  font-size: 1.7rem;
+}
+
+/* --- "Load More" Button --- */
+.load-more-container {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.load-more-btn {
+  background-color: #343a40;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 2.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+}
+
+.load-more-btn:hover {
+  background-color: #198754;
+}
+
+/* --- Responsive Grid Adjustments --- */
+@media (max-width: 991px) {
+  .news-card.grid-col-span-6,
+  .news-card.grid-col-span-4 {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 767px) {
+  .news-card.grid-col-span-6,
+  .news-card.grid-col-span-4 {
+    grid-column: span 12; /* Full width on mobile */
+  }
+  .news-header h1 {
+    font-size: 2.5rem;
+  }
+}

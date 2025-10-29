@@ -1,0 +1,167 @@
+/* =================================
+   1. HYJAIN THEME & VARIABLES
+   ================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-green: #008060;
+  --primary-green-light: #e6f2ef;
+  --text-heading: #1a202c;
+  --text-body: #4a5568;
+  --background-page: #f8f9fa;
+  --border-color: #e2e8f0;
+  --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --font-family-base: 'Poppins', sans-serif;
+}
+
+/* =================================
+   2. KEYFRAME ANIMATIONS
+   ================================= */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =================================
+   3. MAIN CONTAINER & LAYOUT
+   ================================= */
+.policy-page-container {
+  font-family: var(--font-family-base);
+  max-width: 900px;
+  min-height: 60vh;
+  margin: 4rem auto;
+  padding: 3rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+  /* The main container gets the initial animation */
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* =================================
+   4. STAGGERED CONTENT ANIMATION
+   ================================= */
+/* This class animates the direct children of the container */
+.animate-content > * {
+  opacity: 0; /* Initially hidden */
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Apply sequential delays */
+.animate-content > *:nth-child(1) { animation-delay: 0.1s; }
+.animate-content > *:nth-child(2) { animation-delay: 0.2s; }
+.animate-content > *:nth-child(3) { animation-delay: 0.3s; }
+.animate-content > *:nth-child(4) { animation-delay: 0.4s; }
+.animate-content > *:nth-child(5) { animation-delay: 0.5s; }
+.animate-content > *:nth-child(6) { animation-delay: 0.6s; }
+/* Add more if you have many sections */
+
+
+/* =================================
+   5. TYPOGRAPHY & CONTENT STYLING
+   ================================= */
+.policy-page-container h1 {
+  text-align: center;
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  /* Branded accent border */
+  border-bottom: 3px solid var(--primary-green-light);
+  position: relative;
+}
+
+/* Adds the small green line under the H1 */
+.policy-page-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; /* Sits on top of the border */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--primary-green);
+  border-radius: 2px;
+}
+
+.policy-page-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.policy-page-container p,
+.policy-page-container li {
+  font-size: 1.05rem; /* Slightly larger for readability */
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+  color: var(--text-body);
+}
+
+.policy-page-container ul {
+  list-style: none; /* Remove default bullets */
+  padding-left: 5px;
+}
+
+.policy-page-container li {
+  padding-left: 30px; /* Space for custom bullet */
+  position: relative;
+}
+
+/* Custom bullet point styling */
+.policy-page-container li::before {
+  content: '✔'; /* You can use other icons like '•' or FontAwesome icons */
+  position: absolute;
+  left: 0;
+  top: 4px;
+  color: var(--primary-green);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.policy-page-container a {
+  color: var(--primary-green);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.policy-page-container a:hover {
+  color: var(--primary-green-dark);
+  text-decoration: underline;
+}
+
+/* =================================
+   6. RESPONSIVE DESIGN
+   ================================= */
+@media (max-width: 768px) {
+  .policy-page-container {
+    margin: 2rem 1rem; /* Prevent touching screen edges */
+    padding: 2rem;
+  }
+  .policy-page-container h1 {
+    font-size: 2.25rem;
+  }
+  .policy-page-container h2 {
+    font-size: 1.3rem;
+  }
+  .policy-page-container p,
+  .policy-page-container li {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .policy-page-container {
+    padding: 1.5rem;
+  }
+  .policy-page-container h1 {
+    font-size: 1.8rem;
+  }
+}

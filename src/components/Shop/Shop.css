@@ -1,0 +1,226 @@
+/* src/components/Shop.css */
+
+/* --- Theming & Color Palette --- */
+:root {
+  --primary-color: #006A4E;
+  --accent-color: #E67E22;
+  --danger-color: #e74c3c;
+  --light-bg-start: #f5fff7;
+  --light-bg-end: #f8f9fa;
+  --text-color: #34495e;
+  --card-bg: #ffffff; /* This is now the only background for cards */
+  --card-border-radius: 1.25rem;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+}
+
+/* --- General Page Styles & Background Effect --- */
+.shop-page {
+  background: linear-gradient(150deg,#a13300b9, #21fa0d0e 10%);
+  color: var(--text-color);
+  position: relative;
+  overflow-x: hidden;
+  z-index: 0;
+}
+
+.background-graphics {
+  position: absolute; top: 50; left: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: -1;
+}
+
+.circle {
+  position: absolute; border-radius: 50%;
+  animation: move 25s linear infinite;
+  opacity: 0.9; /* Made circles slightly more visible */
+}
+
+.circle.c1 {
+  width: 400px; height: 400px; top: 10%; left: -200px;
+  background: radial-gradient(circle, rgba(0, 106, 78, 0.1) 0%, transparent 70%); /* Stronger color */
+  animation-duration: 20s;
+}
+.circle.c2 {
+  width: 600px; height: 600px; bottom: -300px; right: -300px;
+  background: radial-gradient(circle, rgba(230, 126, 34, 0.08) 0%, transparent 70%); /* Stronger color */
+  animation-duration: 30s;
+}
+.circle.c3 {
+  width: 300px; height: 300px; top: 60%; right: -150px;
+  background: radial-gradient(circle, rgba(0, 106, 78, 0.07) 0%, transparent 70%); /* Stronger color */
+  animation-duration: 15s;
+}
+
+@keyframes move {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+  100% { transform: translateY(0) rotate(360deg); }
+}
+
+.section-title {
+  font-weight: 700; color: var(--primary-color); padding-bottom: 10px;
+  display: inline-block; margin-bottom: 1rem; position: relative;
+}
+.section-title::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 2px;
+}
+
+/* --- Slideshow Section --- */
+.slideshow-full-width-container { width: 95%; margin: 2rem auto 0 auto; }
+.shop-slideshow-section {
+  border-radius: var(--card-border-radius);
+  overflow: hidden; box-shadow: var(--card-shadow);
+  border: 3px solid var(--primary-color);
+  max-height: 500px;
+}
+.slideshow-image { width: 100%; height: 100%; max-height: 500px; object-fit: cover; }
+.swiper-button-next, .swiper-button-prev { color: white !important; }
+.swiper-pagination-bullet-active { background: white !important; }
+
+/* --- Shop by Category Section --- */
+.shop-by-category-section { margin-bottom: 4rem !important; }
+
+/* --- CORRECTED: Category Card with Multi-Color Hover Border --- */
+.category-card-shop {
+  background-color: var(--card-bg); /* Clean white background */
+  border-radius: var(--card-border-radius);
+   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.137);
+  transition: all 0.3s ease;
+  padding: 1rem; height: 100%;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.category-card-shop::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 150%; height: 150%;
+  background: linear-gradient(116deg,  #03a71e80, #e98e0670);
+  z-index: -2;
+  opacity: 0;
+  animation: rotate-colors 4s linear infinite;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.category-card-shop::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    background: linear-gradient(150deg, #e98e0633, #015a1050);/* The inner background is clean white */
+    border-radius: calc(var(--card-border-radius) - 3px);
+    z-index: -1;
+
+
+}.category-card-shop-name.text-black {
+  font-weight: bold;
+}
+
+.category-card-shop:hover::before {
+  opacity: 1;
+}
+
+.category-card-shop:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes rotate-colors {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.category-card-shop-link { text-decoration: none; }
+.category-card-shop-img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 0.75rem; }
+.category-card-shop-icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 0.75rem; }
+.category-card-shop-name { font-weight: 500; color: var(--text-color); font-size: 0.9rem; }
+/* --- End of Category Card Fix --- */
+
+/* --- Product, Feature, and GST Cards (Clean White Background) --- */
+.our-products-section { margin-top: 4rem; }
+.product-card-shop, .feature-card, .gst-card {
+  background-color:#ffffff60; /* Clean white background */
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.377);
+
+  transition: all 0.3s ease;
+}
+.product-card-shop { padding: 0; }
+.product-card-shop:hover, .feature-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); }
+.product-image-container {  height: 180px;
+  width: 100%;
+  padding: 10px; /* This creates the space around the image INSIDE the white box */
+  background: rgba(255, 255, 255, 0.589);
+  border-radius: 2rem; /* FIXED: Changed to 2rem as requested */
+  margin: 10px; /* This creates the space between the white box and the card edges */
+  width: calc(100% - 20px);}
+.card-img-top {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* makes the image fill nicely */
+  border-radius: 1rem;
+}
+.product-price { color: #17a2b8; }
+
+.why-choose-us-section { padding: 5rem 0; }
+.feature-card { padding: 2.5rem; text-align: center; height: 100%; }
+.feature-icon-wrapper {
+  width: 70px; height: 70px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #e8f5e9, #ffffff);
+  margin: 0 auto 1.5rem auto;
+}
+.feature-icon-wrapper i { font-size: 2.2rem; color: var(--primary-color); }
+.gst-update-section { padding-bottom: 4rem; }
+.gst-card { padding: 2.5rem; }
+
+/* --- Button Styles --- */
+.card-body .btn, .view-all-btn, .gst-card .btn {
+  border-radius: 100px; font-weight: 500;
+  padding: 0.7rem 1.5rem; transition: all 0.3s ease;
+  border-width: 1.5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); color: white; }
+.btn-primary:hover { background-color: #00563f; border-color: #00422f; transform: scale(1.05); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+.btn-outline-danger { color: var(--danger-color); border-color: var(--danger-color); background-color: transparent; box-shadow: none; }
+.btn-outline-danger:hover { color: #fff; background-color: var(--danger-color); border-color: var(--danger-color); }
+
+/* --- NEW: Marquee Section --- */
+.marquee-section {
+  width: 100%;
+  background: linear-gradient(90deg, var(--primary-color), #004d39);
+  color: #fff;
+  padding: 1rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+  margin-top: 2rem; /* Add some space from the content above */
+}
+
+.marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee-animation 40s linear infinite;
+}
+
+.marquee-content span {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 2.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+@keyframes marquee-animation {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee-section:hover .marquee-content {
+  animation-play-state: paused;
+}

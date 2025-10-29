@@ -1,0 +1,158 @@
+/* =================================
+   1. HYJAIN THEME & VARIABLES
+   ================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-green: #008060;
+  --primary-green-dark: #005a43;
+  --primary-green-light: #e6f2ef;
+  --text-heading: #1a202c;
+  --text-body: #4a5568;
+  --background-page: #f8f9fa; /* Slightly off-white */
+  --border-color: #e2e8f0;
+  --card-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --font-family-base: 'Poppins', sans-serif;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--background-page);
+}
+
+/* =================================
+   2. KEYFRAME ANIMATIONS
+   ================================= */
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+@keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* =================================
+   3. ANIMATION HELPER CLASSES
+   ================================= */
+.animate-slide-in-left { animation: slideInLeft 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.animate-slide-in-right { animation: slideInRight 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.content-fade-in { animation: fadeInUp 0.5s ease-out 0.1s both; }
+.content-fade-out { animation: fadeOutUp 0.3s ease-in forwards; }
+
+.animate-children > * { opacity: 0; animation: fadeInUp 0.6s ease-out forwards; }
+.animate-children > *:nth-child(1) { animation-delay: 0.1s; }
+.animate-children > *:nth-child(2) { animation-delay: 0.2s; }
+.animate-children > *:nth-child(3) { animation-delay: 0.3s; }
+.animate-children > *:nth-child(4) { animation-delay: 0.4s; }
+.animate-children > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* =================================
+   4. SIDEBAR & CONTENT STYLING
+   ================================= */
+.page-sidebar .nav-pills .nav-link {
+  color: var(--text-body);
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+}
+.page-sidebar .nav-pills .nav-link:hover {
+  background-color: var(--primary-green-light);
+  color: var(--primary-green);
+  transform: translateX(5px);
+}
+.page-sidebar .nav-pills .nav-link.active {
+  background-color: var(--primary-green);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.2);
+}
+
+.content-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+.content-section p { color: var(--text-body); line-height: 1.8; }
+.content-section h2, .content-section h3, .content-section h4, .content-section h5 { color: var(--text-heading); font-weight: 600; }
+.lead { font-weight: 400; }
+
+/* =================================
+   5. COMPONENT SPECIFIC STYLES
+   ================================= */
+
+/* --- Overview --- */
+.overview-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.overview-card:hover { transform: translateY(-8px); box-shadow: var(--card-shadow-hover); }
+.read-more-btn { color: var(--primary-green); font-weight: 600; text-decoration: none; transition: color 0.2s; }
+.read-more-btn:hover { color: var(--primary-green-dark); }
+
+/* --- Heritage & Vision --- */
+.heritage-image { border: 8px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.pillar h4 { border-bottom: 3px solid var(--primary-green-light); display: inline-block; padding-bottom: 0.5rem; }
+
+/* --- CSR & Why Hyjain --- */
+.csr-item, .product-card { border-top: 4px solid var(--primary-green); }
+.point-icon {
+  background-color: var(--primary-green-light);
+  color: var(--primary-green);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}
+
+/* --- Products --- */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+.product-card:hover { transform: translateY(-8px); box-shadow: var(--card-shadow-hover); }
+.product-card .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    filter: saturate(1.1);
+}
+
+/* --- Milestones Timeline --- */
+.milestones-timeline { position: relative; border-left: 3px solid var(--border-color); }
+.milestone-item { position: relative; padding-bottom: 2.5rem; }
+.milestone-item:last-child { padding-bottom: 0; }
+.milestone-dot {
+  position: absolute;
+  left: -10px;
+  top: 5px;
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border: 4px solid var(--primary-green);
+  border-radius: 50%;
+  z-index: 1;
+  transition: transform 0.2s ease-out;
+}
+.milestone-item:hover .milestone-dot {
+  transform: scale(1.2);
+}
+.milestone-icon {
+    position: absolute;
+    left: -24px;
+    top: 0px;
+    width: 48px;
+    height: 48px;
+    background-color: var(--background-page);
+    color: var(--primary-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    z-index: 1;
+    border: 3px solid var(--border-color);
+}

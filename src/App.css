@@ -1,0 +1,103 @@
+/* cartflow */
+
+
+.checkout-stepper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step-item {
+    text-align: center;
+    color: #adb5bd; /* Gray for inactive steps */
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.step-item.active {
+    color: #0d6efd; /* Blue for the active step */
+    font-weight: bold;
+}
+
+.step-item.completed {
+    color: #198754; /* Green for completed steps */
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d; /* Dark gray icon color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.step-item.active .step-icon {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.step-item.completed .step-icon {
+    background-color: #198754;
+    color: white;
+}
+
+.step-connector {
+    flex-grow: 1;
+    border-bottom: 2px solid #e9ecef;
+    margin: 20px;
+}
+
+.step-label {
+    display: block;
+    font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .step-label {
+        display: none; /* Hide text on small screens */
+    }
+    .step-connector {
+        margin: 20px 10px;
+    }
+}
+
+
+/* src/App.css */
+
+/* --- Styles for Horizontally Scrolling Product Recommendations --- */
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  padding-bottom: 1.5rem; /* Adds space so content isn't cut off */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+
+  /* --- THIS IS THE FIX --- */
+  /* Hide scrollbar for modern browsers */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+/* --- END OF FIX --- */
+
+.scroll-card {
+  flex: 0 0 220px; /* Prevents cards from shrinking. Adjust width as needed. */
+  width: 220px;
+  margin-right: 1rem;
+}
+
+
+

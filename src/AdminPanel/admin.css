@@ -1,0 +1,209 @@
+/* admin.css */
+
+/* Main layout structure */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  /* Light grey background */
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 1px solid #dee2e6;
+  transition: margin-left 0.3s;
+}
+
+.admin-main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+}
+
+/* Sidebar Navigation Links */
+.admin-sidebar .nav-link {
+  color: #495057;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  /* Bootstrap's default border radius */
+  margin-bottom: 0.25rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-sidebar .nav-link:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+/* Style for the active NavLink */
+.admin-sidebar .nav-link.active {
+  background-color: #0d6efd;
+  /* Bootstrap primary color */
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.admin-sidebar .nav-link.active i {
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .admin-sidebar {
+    /* The sidebar will be an offcanvas menu, handled by Bootstrap JS */
+    width: 280px;
+  }
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* NEW: Custom Admin Button Style */
+.btn-admin-primary {
+  background-color: #006A4E;
+  /* Dark Green/Teal from theme */
+  color: #fff;
+  border-radius: 50px;
+  /* Fully rounded */
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-admin-primary:hover {
+  background-color: #00563f;
+  /* Darker shade on hover */
+  color: #fff;
+}
+
+
+/* --- Responsive Card Table for Orders --- */
+@media (max-width: 767.98px) {
+  .responsive-card-table thead {
+    display: none;
+  }
+
+  .responsive-card-table tr {
+    display: block;
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .responsive-card-table tr:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .responsive-card-table td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+  }
+
+  .responsive-card-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0.75rem;
+    width: calc(50% - 1.5rem);
+    padding-right: 0.5rem;
+    text-align: left;
+    font-weight: bold;
+    color: #212529;
+  }
+
+  .responsive-card-table td[data-label="Action"] {
+    text-align: center;
+    padding-left: 0.75rem;
+  }
+
+  .responsive-card-table td[data-label="Action"]::before {
+    content: '';
+  }
+}
+
+/* --- Responsive Card Table for Products --- */
+@media (max-width: 767.98px) {
+  .product-table thead {
+    display: none;
+  }
+
+  .product-table tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .product-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .product-table td {
+    border: none;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .product-table td[data-label="Image"] {
+    flex: 0 0 70px;
+    padding-right: 10px;
+  }
+
+  .product-table td:not([data-label="Image"]):not([data-label="Actions"]) {
+    flex: 1 1 calc(100% - 70px);
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+  }
+
+  .product-table td.description-cell {
+    flex: 1 1 100%;
+    margin-top: 0.5rem;
+    text-align: left;
+    color: #6c757d;
+    font-size: 0.9rem;
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .product-table td[data-label="Actions"] {
+    flex: 1 1 100%;
+    margin-top: 0.75rem;
+    text-align: center;
+    padding-top: 0.75rem;
+    border-top: 1px dashed #e0e0e0;
+  }
+
+  .product-table td:not([data-label="Image"]):not([data-label="Description"]):not([data-label="Actions"])::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-align: left;
+    padding-right: 1rem;
+    color: #343a40;
+  }
+
+  .product-table td[data-label="Description"]::before {
+    content: '';
+  }
+}

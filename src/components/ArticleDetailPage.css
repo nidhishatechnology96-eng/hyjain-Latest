@@ -1,0 +1,74 @@
+/* src/components/ArticleDetailPage.css */
+
+.article-header {
+  position: relative;
+  height: 50vh;
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.article-header-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 3rem;
+}
+
+.article-category-badge {
+  background-color: #198754;
+  color: white;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.article-title {
+  font-family: serif;
+  font-size: 3rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+.article-meta {
+  color: #e0e0e0;
+}
+
+.article-body-container {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.article-body p {
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.back-link-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.back-link {
+  color: #0d6efd;
+  font-weight: 600;
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .article-title {
+    font-size: 2rem;
+  }
+}

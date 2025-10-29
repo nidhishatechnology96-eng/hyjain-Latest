@@ -1,0 +1,185 @@
+/* --- Hero Section Styling --- */
+.people-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  overflow: hidden; /* Important for Ken Burns effect */
+  /* ✅ NEW: Ken Burns Animation */
+  animation: kenburns 20s ease-out forwards;
+}
+
+/* ✅ NEW: Keyframes for Ken Burns Effect */
+@keyframes kenburns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.people-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45); /* Slightly darker overlay */
+}
+
+.people-hero h1 {
+  position: relative;
+  z-index: 2;
+  font-family: serif;
+  font-size: 4rem;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* --- Main Content Styling --- */
+.people-content-container {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.people-intro h2 {
+  font-family: serif;
+  font-size: 1.2rem;
+  color: #006A4E; /* Brand color */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.people-intro p {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #343a40;
+  max-width: 800px;
+}
+
+/* --- Feature Section Styling --- */
+.feature-section {
+  padding: 5rem 0;
+  overflow-x: hidden; /* Prevents horizontal scrollbar from animations */
+}
+
+.feature-section.bg-light-beige {
+  background-color: #fdfaf6; /* Lighter, more subtle beige */
+}
+
+.feature-section .feature-text h3 {
+  font-family: serif;
+  font-size: 2.5rem;
+  color: #004d11; /* A classic maroon */
+  margin-bottom: 1.5rem;
+}
+
+.feature-section .feature-text p {
+  color: #495057;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.feature-section .feature-image {
+  max-width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  /* ✅ NEW: Hover effect */
+  transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+}
+.feature-section .feature-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* Styling for expanded content */
+.expanded-content {
+  overflow: hidden; /* Crucial for the height animation */
+}
+.expanded-content p {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid #006A4E;
+}
+
+/* --- Custom "Read More" Button --- */
+.btn-outline-maroon {
+  border: 1px solid #000000;
+  color: #026907;
+  border-radius: 50px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: center;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-top: 1rem; /* Added margin */
+}
+
+.btn-outline-maroon:hover {
+  background-color: #027a26;
+  color: white;
+}
+
+/* ✅ NEW: Call to Action Section Styling */
+.cta-section {
+  padding: 5rem 0;
+  background-color: #006A4E;
+  color: white;
+}
+.cta-section h2 {
+  font-family: serif;
+  font-size: 3rem;
+  font-weight: 500;
+}
+.cta-section p {
+  max-width: 600px;
+  margin: 1rem auto 2rem auto;
+}
+.btn-cta {
+  background-color: white;
+  color: #006A4E;
+  border: 2px solid white;
+  padding: 0.8rem 2.5rem;
+  font-weight: bold;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.btn-cta:hover {
+  background-color: transparent;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .people-hero h1 {
+    font-size: 2.5rem;
+  }
+  .feature-section {
+    padding: 3rem 0;
+  }
+  .feature-section .feature-text {
+    text-align: center;
+  }
+  .feature-section .feature-image {
+    margin-top: 2rem;
+  }
+  .cta-section h2 {
+    font-size: 2.2rem;
+  }
+}

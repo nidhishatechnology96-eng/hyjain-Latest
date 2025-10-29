@@ -1,0 +1,723 @@
+/* --- src/components/Home.css --- */
+
+/* --- 1. Root Variables & General Styles --- */
+:root {
+  --primary-green: #2E7D32; /* Rich, natural green */
+  --secondary-green: #66BB6A; /* Lighter, fresh green */
+  --accent-yellow: #FFC107; /* Sunny, warm accent */
+  --light-bg: #F9FBF8; /* Very soft off-white */
+  --text-dark: #212529;
+  --text-muted: #6c757d;
+  --border-color: #e9ecef;
+  --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 12px 40px rgba(46, 125, 50, 0.15);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+}
+
+.home-page {
+  background-color: var(--light-bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* --- 2. Animated Background --- */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.animated-background::before,
+.animated-background::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px); /* Increased blur for softer effect */
+  opacity: 0.5;
+}
+
+.animated-background::before {
+  width: 45vmax;
+  height: 45vmax;
+  background: radial-gradient(circle, var(--secondary-green), transparent 60%);
+  top: -15vh;
+  left: -20vw;
+  animation: float 35s infinite linear alternate;
+}
+
+.animated-background::after {
+  width: 55vmax;
+  height: 55vmax;
+  background: radial-gradient(circle, var(--accent-yellow), transparent 60%);
+  bottom: -20vh;
+  right: -25vw;
+  animation: float 45s infinite linear alternate-reverse;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(40px, -40px) rotate(180deg); }
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+}
+
+
+/* --- 3. Hero Section --- */
+.hero-section {
+  position: relative;
+  height: 80vh; /* Taller hero section */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 0;
+  
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+  z-index: 1;
+}
+
+.hero-content {
+  z-index: 2;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* --- 4. Custom Buttons --- */
+.btn-gradient-primary {
+  background: linear-gradient(45deg, var(--secondary-green), var(--primary-green));
+  border: none;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 15px rgba(46, 125, 50, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(46, 125, 50, 0.4);
+  color: white;
+}
+
+/* --- 5. Feature Card (Why Choose Us) --- */
+.feature-card {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 2.5rem;
+}
+
+/* Soft background colors */
+.bg-success-soft { background-color: #e8f5e9; }
+.bg-primary-soft { background-color: #e3f2fd; }
+.bg-warning-soft { background-color: #fff8e1; }
+
+
+/* --- 6. Categories Section --- */
+/* === Background Section === */
+.bg-light-gradient {
+  background: linear-gradient(180deg, #ff682d0e, #f7f9f73a);
+  overflow: visible !important;
+  position: relative;
+  z-index: 1;
+}
+
+.container,
+.row {
+  overflow: visible !important; /* Ensure shadows are visible */
+}
+
+/* === Category Wrapper (Hover + Shadow) === */
+.category-wrapper {
+  position: relative;
+  border-radius: 20px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.category-wrapper:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 10px 25px rgba(255, 0, 0, 0.5),
+    0 0 25px rgba(0, 175, 53, 0.6),
+    0 0 45px rgba(0, 114, 129, 0.3);
+  z-index: 5;
+}
+
+/* === Category Card (Main Image Container) === */
+.category-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 380px;
+  background: #000;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+   box-shadow: -15px 20px 20px 3px #000000b0;
+}
+
+/* === Shine Effect === */
+.category-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    1deg,
+    rgba(175, 134, 0,  0) 0%,
+    rgba(175, 134, 0, 0.5) 50%,
+    rgba(175, 134, 0,  0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: all 0.75s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.category-wrapper:hover .category-card::before {
+  left: 125%;
+}
+
+/* === Image Style === */
+.category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-wrapper:hover .category-img {
+  transform: scale(1.15);
+}
+
+/* === Overlay (Bottom Fade + Title Area) === */
+.category-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  text-align: left;
+  z-index: 4;
+  border-radius: 20px;
+}
+
+/* === Title Text === */
+.category-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transform: translateY(10px);
+  opacity: 0.9;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.category-wrapper:hover .category-title {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* === Animation on Scroll (Optional Fade-in) === */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === Fade-in Animations for Heading Section === */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .category-card {
+    height: 280px;
+  }
+
+  .category-title {
+    font-size: 1.25rem;
+  }
+}
+
+
+/* --- 7. Our Story Section --- */
+.story-image-wrapper {
+  position: relative;
+  padding: 1rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.178);
+  border-radius: 24px;
+}
+.story-image-wrapper img {
+  border: 4px solid white;
+}
+.badge-hyjain {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background-color: #e8f5e9;
+  color: var(--primary-green);
+  font-weight: 600;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
+}
+.story-divider {
+  width: 100px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary-green), var(--accent-yellow));
+}
+.story-checklist {
+  list-style: none;
+  padding-left: 0;
+  font-size: 1.1rem;
+}
+.story-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.story-checklist i {
+  color: var(--primary-green);
+  font-size: 1.4rem;
+}
+
+
+/* --- 8. Our Commitment Section --- */
+/* === Base Commitment Card Style === */
+.commitment-card {
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.363);
+  transition: all 0.4s ease;
+}
+
+.commitment-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(131, 0, 0, 0.15);
+}
+
+/* === Sustainability Card === */
+.Sustainability .commitment-card {
+  background: linear-gradient(135deg,  #c8f0c4, #13caeb3b);
+  border: 1px solid #a9e1a0;
+}
+
+.Sustainability .commitment-icon {
+  color: #28a745 !important;
+}
+
+.Sustainability .commitment-card:hover {
+  background: linear-gradient(135deg, #13caeb3b, #b4e8ad);
+}
+
+/* === Community Card === */
+.Community .commitment-card {
+  background: linear-gradient(135deg, #e66f003f, #b6077338);
+  border: 1px solid #a1c2ff;
+}
+
+.Community .commitment-icon {
+  color: #0d6efd !important; /* Bootstrap blue tone */
+}
+
+.Community .commitment-card:hover {
+  background: linear-gradient(135deg, #b6077338, #e66f003f);
+}
+
+/* === Health Card === */
+.Health .commitment-card {
+  background: linear-gradient(170deg, #ffd0003b, #f144003b);
+  border: 1px solid #ffb4b4;
+}
+
+.Health .commitment-icon {
+  color: #dc3545 !important; /* Bootstrap red tone */
+}
+
+.Health .commitment-card:hover {
+  background: linear-gradient(150deg, #f144003b, #ffd0003b);
+}
+
+
+
+/* --- 9. Meet Our Team Section --- */
+.team-member-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.team-member-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Fixed Top Graphic --- */
+.team-graphic {
+  background: linear-gradient(135deg, #fff6e8, #fff);
+  padding: 1rem 1rem 0;
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.team-fixed-img {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+/* --- Card Body --- */
+.team-card-body {
+  padding: 2rem;
+}
+
+.team-card-body h4 {
+  color: #2c2c2c;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.team-role {
+  color: #228b22;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+/* --- Social Icons --- */
+.team-socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.team-socials i {
+  color: #cfa048ff;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.team-socials i:hover {
+  color: var(--primary-green);
+  transform: scale(1.2);
+}
+
+/* --- Section Background Gradient --- */
+.bg-light-gradient {
+  background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating Decorative Circles */
+.bg-light-gradient::before,
+.bg-light-gradient::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(207, 160, 72, 0.1);
+  z-index: 0;
+  animation: floatShape 10s ease-in-out infinite alternate;
+}
+
+.bg-light-gradient::before {
+  width: 200px;
+  height: 200px;
+  top: -80px;
+  left: -60px;
+}
+
+.bg-light-gradient::after {
+  width: 300px;
+  height: 300px;
+  bottom: -120px;
+  right: -80px;
+}
+
+@keyframes floatShape {
+  0% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(-15px); opacity: 0.9; }
+  100% { transform: translateY(0); opacity: 0.6; }
+}
+
+
+/* --- 10. Review CTA Section --- */
+.review-cta {
+  background: linear-gradient(135deg, var(--primary-green), #1b5e20), url('https://www.transparenttextures.com/patterns/subtle-carbon.png');
+  border-radius: 25px;
+  background-blend-mode: multiply;
+}
+
+/* --- 11. Animation Classes --- */
+.animate-on-scroll {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.fade-in { transform: translateY(20px); }
+.fade-in-up { transform: translateY(40px); }
+.fade-in-down { transform: translateY(-40px); }
+.slide-in-left { transform: translateX(-50px); }
+.slide-in-right { transform: translateX(50px); }
+
+
+/* --- ✅ NEW: "Why Choose Us" Section Styling --- */
+.feature-card {
+  border-radius: 1.5rem; /* Rounded corners */
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05); /* Softer shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff; /* Default white background */
+   position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover lift effect */
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* Shine strip */
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: all 0.5s ease;
+}
+
+/* Animate shine on hover */
+.feature-card:hover::before {
+  left: 125%;
+  transition: all 0.75s ease;
+}
+
+
+.feature-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%; /* CIRCLE shape for the icon background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  background-color: #f8f9fa; /* A very light grey for the circle */
+}
+
+.feature-icon-wrapper i {
+  font-size: 2.5rem;
+}
+
+/* --- Individual ICON colors --- */
+.quality-icon i {
+  color: #2e7d32; /* Dark green */
+}
+.delivery-icon i {
+  color: #1565c0; /* Dark blue */
+}
+.organic-icon i {
+  color: #f57f17; /* Dark yellow */
+}
+
+/* --- ✅ THIS IS THE FIX: Individual CARD background colors --- */
+.feature-card.quality-card {
+  background-color: #008a0b31; /* Very light green */
+}
+.feature-card.delivery-card {
+  background-color: #0254ce57; /* Very light blue */
+}
+.feature-card.organic-card {
+  background-color: #d8440033; /* Very light yellow */
+}
+
+
+/* src/components/Home/Home.css */
+
+/* --- 9. Meet Our Team Section (CORRECTED & REFINED) --- */
+
+.team-member-card {
+  background: #fff;
+  border-radius: 20px; /* Nicely rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07); /* Softer, more modern shadow */
+  transition: all 0.4s ease;
+  position: relative; /* Crucial for positioning the image */
+  padding-top: 50px; /* Creates space for the image to sit above the text */
+  margin-top: 50px; /* Adds space above the card for the image to pop into */
+  overflow: visible; /* ✅ THIS IS THE MAIN FIX: Allows the image to show outside the card */
+}
+
+.team-member-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(46, 125, 50, 0.12); /* Branded shadow on hover */
+}
+
+/* Style for the team member portrait image */
+.team-img {
+  width: 100px; /* Matches screenshot size */
+  height: 100px; /* Matches screenshot size */
+  border-radius: 50%; /* Makes it a perfect circle */
+  object-fit: cover; /* Prevents the image from being stretched */
+  border: 4px solid #fff; /* White border around the photo */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for the photo itself */
+
+  /* This positions the image perfectly on the top edge */
+  position: absolute;
+  top: -50px; /* Pulls it up by half its height (100px / 2) */
+  left: 50%;
+  transform: translateX(-50%); /* Horizontally centers the image */
+  z-index: 2;
+}
+
+.team-card-body {
+  padding: 1.5rem;
+  padding-top: 1rem; /* Adjust padding inside the body */
+}
+
+.team-card-body h4 {
+  color: var(--text-dark);
+  font-weight: 700;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.team-role {
+  color: #008080; /* A teal color like in the screenshot */
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: var(--text-muted); /* Use the muted text color */
+  margin-bottom: 1.5rem; /* More space before the social icons */
+}
+
+.team-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.team-socials i {
+  color: #cfa048; /* Gold/brown color from screenshot */
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.team-socials i:hover {
+  color: var(--primary-green);
+  transform: scale(1.2);
+}
+
+/* This targets the parent container of the cards */
+.row.justify-content-center {
+  padding-bottom: 2rem; /* Adds some space below the cards */
+}

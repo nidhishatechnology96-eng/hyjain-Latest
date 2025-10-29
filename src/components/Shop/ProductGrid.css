@@ -1,0 +1,262 @@
+/* src/components/products/ProductGrid.css */
+
+/* --- MODERN UI/UX THEME & COLOR PALETTE --- */
+:root {
+    --primary-color: #006A4E;
+    --accent-color: #E67E22;
+    --danger-color: #e74c3c;
+    --light-bg-start: #17df3f;
+    /* Light green for the gradient top */
+    --light-bg-end: #f8f9fa;
+    /* Off-white for the gradient bottom */
+    --text-color: #34495e;
+    --card-bg: #ffffff;
+    --card-border-radius: 1.25rem;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+}
+
+/* --- ✅ NEW: Category Banner Header (Matches Screenshot) --- */
+.category-banner {
+    padding: 3rem 0;
+    margin-bottom: 1rem;
+    background: linear-gradient(110deg, #e0f2e9, #f5f3ef);
+    /* Soft green to beige gradient */
+}
+
+/* ✅ UPDATED: .product-grid-header for new layout */
+.product-grid-header {
+    position: relative;
+    padding-bottom: 0;
+    /* Remove old padding */
+    display: flex;
+    /* Enable flexbox for alignment */
+    flex-direction: column;
+    /* Stack items vertically */
+    align-items: center;
+    /* Center items horizontally */
+    border-bottom: none;
+    /* Remove old border */
+}
+
+/* ✅ UPDATED: .page-title positioning */
+.page-title {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    /* Make title larger */
+    order: 2;
+    /* Position after the back link */
+    text-align: center;
+    margin-bottom: 0.25rem;
+}
+
+/* ✅ UPDATED: .product-count positioning */
+.product-count {
+    font-size: 1rem;
+    order: 3;
+    /* Position after the title */
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Find the existing .back-to-shop-link rule and replace it with this */
+
+.back-to-shop-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    order: 1; 
+    align-self: flex-start;
+    position: static; 
+    padding: 0.5rem 1rem; /* Add some padding for a better clickable area */
+    margin-bottom: 0.5rem; 
+    border-radius: 50px; /* Make it a pill shape */
+    font-size: 1rem; /* Slightly increase font size */
+}
+
+/* ✅ ADD THIS NEW RULE for the icon */
+.back-to-shop-link i {
+    font-size: 1.2rem; /* Make the arrow icon bigger */
+    margin-right: 0.5rem; /* Add space between the icon and "Back" text */
+    transition: transform 0.3s ease;
+}
+
+
+.back-to-shop-link:hover {
+    background-color: rgba(0, 106, 78, 0.08); /* Soft green background on hover */
+    color: #004d2b; 
+    border: #004a99;
+}
+
+/* ✅ ADD THIS NEW RULE for the icon's hover effect */
+.back-to-shop-link:hover i {
+    transform: translateX(-3px); /* Move arrow slightly to the left on hover */
+}
+/* --- GENERAL PAGE STYLES & BACKGROUND --- */
+.product-grid-page {
+    background: linear-gradient(150deg, #0896032f, #d85a0656 70%);
+    color: var(--text-color);
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+}
+
+.background-graphics {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    animation: move 25s linear infinite;
+    opacity: 0.9;
+}
+
+.circle.c1 {
+    width: 400px;
+    height: 400px;
+    top: 10%;
+    left: -200px;
+    background: radial-gradient(circle, rgba(0, 106, 78, 0.1) 0%, transparent 70%);
+    animation-duration: 20s;
+}
+
+.circle.c2 {
+    width: 600px;
+    height: 600px;
+    bottom: -300px;
+    right: -300px;
+    background: radial-gradient(circle, rgba(230, 126, 34, 0.08) 0%, transparent 70%);
+    animation-duration: 30s;
+}
+
+.circle.c3 {
+    width: 300px;
+    height: 300px;
+    top: 60%;
+    right: -150px;
+    background: radial-gradient(circle, rgba(0, 106, 78, 0.07) 0%, transparent 70%);
+    animation-duration: 15s;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(360deg);
+    }
+}
+
+/* --- MODERN CARD DESIGN --- */
+.product-card-grid {
+    background: #ffffff60;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+}
+
+.product-card-grid:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 106, 78, 0.15);
+}
+
+.product-card-grid .card-body {
+    text-align: left;
+}
+
+.product-image-container {
+    height: 180px;
+    width: 100%;
+    padding: 10px;
+    background: rgba(242, 245, 245, 0.322);
+    border-radius: 2rem;
+    margin: 10px;
+    width: calc(100% - 20px);
+}
+
+.card-img-top {
+    height: 100%;
+    width: 100%;
+
+}
+
+.product-price {
+    color: #17a2b8;
+}
+
+/* --- BUTTONS --- */
+.btn {
+    border-radius: 100px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 106, 78, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #00563f;
+    border-color: #00422f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 106, 78, 0.3);
+}
+
+.btn-outline-danger {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+/* --- WATER BOTTLE THEME OVERRIDES --- */
+.water-theme {
+    /* Deeper blue page background */
+    background: linear-gradient(175deg, #1abeb042, #6281e60e 50%);
+}
+
+.water-theme .page-title,
+.water-theme .back-to-shop-link {
+    color: #002f61;
+     
+    /* Deeper blue for titles and links */
+}
+
+.water-theme .back-to-shop-link:hover {
+    background-color: rgba(0, 74, 153, 0.192);
+}
+
+.water-theme .product-card-grid {
+    /* Deeper light blue card background */
+    background: linear-gradient(160deg, #aff6ff, #85bbd459);
+}
+
+.water-theme .product-card-grid:hover {
+    box-shadow: 0 15px 35px rgba(0, 74, 153, 0.15);
+}
