@@ -2,7 +2,7 @@ import React, { useContext, useState, useMemo, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { AdminContext } from "../AdminPanel/AdminContext";
 import { CartContext } from "../context/CartContext";
-import Footer from "./Footer/Footer";
+// import Footer from "./Footer/Footer"; // Uncomment if you have a Footer component
 
 function ProductDetails() {
   const { id } = useParams();
@@ -12,18 +12,27 @@ function ProductDetails() {
   
   const product = products.find((p) => String(p.id) === String(id));
   
-  // ✅ State for the main image viewer
   const [mainImage, setMainImage] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [selectedOption, setSelectedOption] = useState(''); // ✅ Set initial state to empty
+
+  // ✅ Check if the current product is a water bottle
+  const isWaterBottle = product && product.category === 'Water Bottles';
+
+  // ✅ Set the default option based on the product category
+  useEffect(() => {
+    if (product) {
+      setSelectedOption(isWaterBottle ? '5l' : '1kg');
+    }
+  }, [product, isWaterBottle]);
   
-  // ✅ Set initial main image when product loads
+  // Set initial main image when product loads
   useEffect(() => {
     if (product) {
       const initialImage = (product.images && product.images[0]) || product.image || "https://placehold.co/400x400";
       setMainImage(initialImage);
     }
   }, [product]);
-
 
   const cartItem = cart.find(item => item.id === product?.id);
   const inCart = cartItem ? cartItem.quantity : 0;
@@ -48,6 +57,37 @@ function ProductDetails() {
     };
   }, [reviews, product]);
 
+  // ✅ START: Expanded price calculation for both weight and volume
+  const currentPrice = useMemo(() => {
+    if (!product) return 0;
+
+    const basePrice = product.price; // Assume this is for the largest size (1kg or 5l)
+    
+    switch (selectedOption) {
+      // Weight options for general products
+      case '1kg':
+        return basePrice;
+      case '500g':
+        return basePrice / 2;
+      case '250g':
+        return basePrice / 4;
+
+      // Volume options for water bottles
+      case '5l':
+        return basePrice; // Base price is for 5L
+      case '2l':
+        return (basePrice / 5) * 2; // Proportional price for 2L
+      case '1l':
+        return basePrice / 5; // Proportional price for 1L
+      case '500ml':
+        return basePrice / 10; // Proportional price for 500ml
+
+      default:
+        return basePrice;
+    }
+  }, [product, selectedOption]);
+  // ✅ END: Expanded Price Calculation
+
   if (!product) {
     return (
       <div className="container my-5 text-center py-5">
@@ -65,16 +105,20 @@ function ProductDetails() {
     );
   }
 
+  // ✅ Conditionally set product options based on category
+  const productOptions = isWaterBottle
+    ? ['5l', '2l', '1l', '500ml']
+    : ['1kg', '500g', '250g'];
+
   const handleAddToCart = () => {
-    addToCart({ ...product, quantity: quantity });
+    addToCart({ ...product, price: currentPrice, quantity: quantity, option: selectedOption });
   };
 
   const handleBuyNow = () => {
-    addToCart({ ...product, quantity: quantity });
+    addToCart({ ...product, price: currentPrice, quantity: quantity, option: selectedOption });
     navigate('/cart');
   };
 
-  // ✅ Get all available images, ensuring backward compatibility
   const productImages = product.images || (product.image ? [product.image] : []);
 
   return (
@@ -82,7 +126,6 @@ function ProductDetails() {
       <div className="container my-5">
         <div className="row g-5">
           <div className="col-md-6">
-            {/* ✅ Main Image Viewer */}
             <div className="card shadow-sm border-0 rounded-3 mb-3">
               <img
                 src={mainImage}
@@ -91,7 +134,6 @@ function ProductDetails() {
                 style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
               />
             </div>
-            {/* ✅ Thumbnail Gallery */}
             {productImages.length > 1 && (
               <div className="d-flex justify-content-center gap-2">
                 {productImages.map((img, index) => (
@@ -128,7 +170,7 @@ function ProductDetails() {
             )}
 
             <div className="d-flex align-items-center mb-3">
-              <h2 className="text-success me-3 mb-0">₹{product.price}</h2>
+              <h2 className="text-success me-3 mb-0">₹{currentPrice.toFixed(2)}</h2>
               {inCart > 0 && (
                 <span className="badge bg-warning text-dark">
                   {inCart} in cart
@@ -149,6 +191,22 @@ function ProductDetails() {
                 <li><i className="bi bi-check-circle text-success me-2"></i>Hygienically processed</li>
               </ul>
             </div>
+            
+            <div className="mb-4">
+              <label className="form-label fw-bold">Option:</label>
+              <div className="d-flex flex-wrap gap-2">
+                {productOptions.map(option => (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`btn btn-sm ${selectedOption === option ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    onClick={() => setSelectedOption(option)}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <div className="row g-3 align-items-center mb-4">
               <div className="col-auto">
@@ -162,7 +220,7 @@ function ProductDetails() {
                 </div>
               </div>
               <div className="col-auto">
-                <span className="text-muted">Subtotal: ₹{(product.price * quantity).toFixed(2)}</span>
+                <span className="text-muted">Subtotal: ₹{(currentPrice * quantity).toFixed(2)}</span>
               </div>
             </div>
 
@@ -182,7 +240,6 @@ function ProductDetails() {
           </div>
         </div>
         
-        {/* ... (Related Products Section - No change needed here but will update image source for safety) ... */}
         {products.filter(p => p.category === product.category && p.id !== product.id).length > 0 && (
           <div className="mt-5 pt-5">
             <h3 className="mb-4">Related Products</h3>
@@ -228,6 +285,7 @@ function ProductDetails() {
           </div>
         )}
       </div>
+      {/* <Footer /> */}
     </div>
   );
 }
