@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { FaUserPlus } from "react-icons/fa";
-import axios from 'axios'; // ✅ 1. IMPORT AXIOS
+import api from '../api';
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ function SignupPage() {
       
       // ✅ 2. SEND NOTIFICATION EMAIL AFTER SUCCESSFUL SIGNUP
       try {
-        await axios.post('http://localhost:5000/api/notify-signup', {
+        await api.post('/api/notify-signup', {
           email: userCredential.user.email,
           name: formData.fullName
         });

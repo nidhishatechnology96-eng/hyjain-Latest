@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { FaUserCircle } from "react-icons/fa";
-import axios from 'axios';
+import api from '../api';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
