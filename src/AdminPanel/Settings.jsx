@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AdminContext } from './AdminContext';
 import axios from 'axios';
+import api from '../api';
 
 function Settings() {
     const { siteSettings, updateSiteSetting, isLoading } = useContext(AdminContext);
@@ -36,7 +37,7 @@ function Settings() {
             formData.append('image', logoFile);
             
             // Uses the same image upload endpoint as other parts of the admin panel
-            const res = await axios.post('http://localhost:5000/api/upload-image', formData, {
+            const res = await axios.post('/api/upload-image', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
@@ -70,7 +71,7 @@ function Settings() {
             const formData = new FormData();
             formData.append('file', pdfFile);
             
-            const res = await axios.post('http://localhost:5000/api/upload-file', formData, {
+            const res = await axios.post('/api/upload-file', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 

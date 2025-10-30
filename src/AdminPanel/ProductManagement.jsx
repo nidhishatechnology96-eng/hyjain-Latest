@@ -4,6 +4,7 @@ import React, { useContext, useState, useMemo } from 'react';
 import { AdminContext } from './AdminContext';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import api from '../api';
 
 function ProductManagement() {
     const { products, addProduct, updateProduct, deleteProduct, categories } = useContext(AdminContext);
@@ -79,7 +80,7 @@ function ProductManagement() {
                 const uploadPromises = imageFiles.map(file => {
                     const formData = new FormData();
                     formData.append('image', file);
-                    return axios.post('http://localhost:5000/api/upload-image', formData, {
+                    return axios.post('/api/upload-image', formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     });
                 });

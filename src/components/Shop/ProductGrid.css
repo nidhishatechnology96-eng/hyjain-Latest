@@ -260,3 +260,265 @@
 .water-theme .product-card-grid:hover {
     box-shadow: 0 15px 35px rgba(0, 74, 153, 0.15);
 }
+
+
+/*
+=================================================================
+  Enhanced & Professional Styles for Manufacturing Process Timeline
+=================================================================
+*/
+
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 50px auto 0 auto; /* Added more top margin for spacing */
+}
+
+/* The central vertical line with a subtle gradient */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  /* A subtle gradient makes it look less flat */
+  background: linear-gradient(to bottom, #d4edda, var(--bs-success), #d4edda);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -2px;
+  border-radius: 2px;
+}
+
+/* Container for each step - this will now be our animation trigger */
+.timeline-item {
+  padding: 1rem 3rem;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(30px); /* Start slightly lower */
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Stagger the animation for a cascading effect */
+.timeline-item:nth-child(even) { animation-delay: 0.2s; }
+.timeline-item:nth-child(odd) { animation-delay: 0.1s; }
+
+
+/* The animated circle on the timeline */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border: 4px solid var(--bs-success);
+  top: 2rem;
+  border-radius: 50%;
+  z-index: 2; /* Make sure it's above the line */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Position the items */
+.timeline-item-left { left: 0; }
+.timeline-item-right { left: 50%; }
+
+/* Position the circles */
+.timeline-item-left::after { right: -12px; }
+.timeline-item-right::after { left: -12px; }
+
+/* The content card - this is where most of the magic happens */
+.timeline-content {
+  padding: 20px 25px;
+  position: relative;
+  background-color: white;
+  border-radius: 8px;
+  /* Professional shadow for depth */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e9ecef; /* Subtle border */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The triangle arrow pointing to the timeline */
+.timeline-content::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 28px;
+  width: 0;
+  z-index: 1;
+  border: solid 8px transparent;
+}
+
+.timeline-item-left .timeline-content::before {
+  right: -16px;
+  border-left-color: #e9ecef; /* Match the border color */
+}
+
+.timeline-item-right .timeline-content::before {
+  left: -16px;
+  border-right-color: #e9ecef; /* Match the border color */
+}
+
+
+/* --- INTERACTIVE HOVER EFFECTS --- */
+.timeline-item:hover .timeline-content {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item:hover .timeline-item::after {
+  transform: scale(1.1);
+  background-color: var(--bs-success); /* Fill the circle on hover */
+}
+
+.timeline-content p {
+  margin: 0;
+  color: #6c757d; /* Using Bootstrap's text-muted color for consistency */
+  font-size: 0.95rem;
+}
+
+
+/* --- KEYFRAME ANIMATION --- */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* --- RESPONSIVE STYLES FOR MOBILE --- */
+@media screen and (max-width: 767px) {
+  .timeline::after {
+    left: 20px;
+  }
+
+  .timeline-item {
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 15px;
+  }
+  
+  .timeline-item-right,
+  .timeline-item-left {
+    left: 0%;
+  }
+
+  .timeline-item-left::after,
+  .timeline-item-right::after {
+    left: 8px; /* 20px - (24px width / 2) */
+  }
+  
+  .timeline-item-left .timeline-content,
+  .timeline-item-right .timeline-content {
+    text-align: left;
+  }
+
+  /* Make sure arrow always points left on mobile */
+  .timeline-item-left .timeline-content::before,
+  .timeline-item-right .timeline-content::before {
+    left: -16px;
+    right: auto;
+    border-right-color: #e9ecef;
+    border-left-color: transparent;
+  }
+}
+
+/* =================================================================== */
+/*  NEW CSS for Shop by Category (Circles) - Add or Replace in Shop.css
+/* =================================================================== */
+
+.shop-by-category-section .section-title {
+  font-weight: 700;
+  color: #2c3e50; /* A nice dark blue/grey for titles */
+}
+
+/* Flexbox container for the circles */
+.category-circles-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2.5rem; /* Space between circles */
+}
+
+/* The individual clickable card (circle + text) */
+.category-circle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 150px; /* Set a fixed width for alignment */
+  transition: transform 0.3s ease;
+}
+
+.category-circle-card:hover {
+  transform: translateY(-8px); /* Lifts the card on hover */
+}
+
+/* The circle element */
+.category-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: #f8f9fa; /* Light grey background for most circles */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border: 3px solid transparent; /* Prepare for active state */
+}
+
+.category-circle-card:hover .category-circle {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: scale(1.03);
+}
+
+/* Specific style for the "All Products" green circle */
+.category-circle.all-products-bg {
+  background-color: #8BC34A; /* The exact green from your image */
+  color: white;
+}
+
+.category-circle.all-products-bg i {
+  font-size: 3rem; /* Make the grid icon large */
+}
+
+/* Style for the images inside the circles */
+.category-circle img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* The title text below the circle */
+.category-title {
+  font-weight: 700;
+  color: #2c3e50;
+  font-size: 1rem;
+  text-decoration: none;
+  text-shadow: none; /* Add this line to remove the shadow */
+}
+
+/* --- ACTIVE STATE --- */
+.category-circle-card.active .category-circle {
+  border-color: #006A4E; /* Your primary theme color */
+  box-shadow: 0 0 0 4px rgba(0, 106, 78, 0.2);
+}
+
+.category-circle-card.active .category-title {
+  color: #006A4E;
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+  .category-circle {
+    width: 120px;
+    height: 120px;
+  }
+  .category-circles-container {
+    gap: 1.5rem;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AdminContext } from './AdminContext';
 import axios from 'axios';
+import api from '../api';
 
 function SlideshowManagement() {
     const { slideshowImages, addSlideshowImage, deleteSlideshowImage, isLoading } = useContext(AdminContext);
@@ -24,7 +25,7 @@ function SlideshowManagement() {
             const uploadPromises = [desktopFile, mobileFile].map(file => {
                 const formData = new FormData();
                 formData.append('image', file);
-                return axios.post('http://localhost:5000/api/upload-image', formData, {
+                return axios.post('/api/upload-image', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
             });

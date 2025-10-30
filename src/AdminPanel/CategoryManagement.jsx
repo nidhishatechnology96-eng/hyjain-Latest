@@ -1,6 +1,7 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { AdminContext } from './AdminContext';
 import axios from 'axios';
+import api from '../api';
 
 function CategoryManagement() {
   const { categories, addCategory, updateCategory, deleteCategory } = useContext(AdminContext);
@@ -69,7 +70,7 @@ function CategoryManagement() {
         if (imageFile) {
             const formData = new FormData();
             formData.append('image', imageFile);
-            const res = await axios.post('http://localhost:5000/api/upload-image', formData);
+            const res = await axios.post('/api/upload-image', formData);
             uploadedImageUrl = res.data.imageUrl;
         }
 
