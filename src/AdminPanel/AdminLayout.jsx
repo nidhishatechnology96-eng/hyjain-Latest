@@ -1,15 +1,18 @@
 import React, { useContext, useEffect } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'; // 1. Added useNavigate
+import { AuthContext, getRole } from '../context/AuthContext'; // 2. Added getRole
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Dropdown, Offcanvas } from 'bootstrap';
 import './admin.css'; 
 
 function AdminLayout() {
-  const { currentUser, userRole } = useContext(AuthContext); // Use role from context
+  const { currentUser, logout } = useContext(AuthContext); // 3. Correctly get currentUser and logout
+  const navigate = useNavigate();
   const location = useLocation();
+  const userRole = getRole(currentUser); // 4. Correctly derive userRole
 
   useEffect(() => {
+    // This part is for initializing Bootstrap JS components and is correct
     const dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
     dropdownElementList.map(function (dropdownToggleEl) {
       return Dropdown.getOrCreateInstance(dropdownToggleEl);
@@ -20,12 +23,25 @@ function AdminLayout() {
     });
   }, [location]);
 
+  // 5. ADD THE LOGOUT HANDLER FUNCTION
+  const handleLogout = async () => {
+    try {
+        await logout();
+        // Redirect to the login page after a successful logout
+        navigate('/login');
+    } catch (error) {
+        console.error("Failed to log out", error);
+        alert("Failed to log out. Please try again.");
+    }
+  };
+
   const allNavItems = [
     { path: '/admin/dashboard', icon: 'bi-speedometer2', name: 'Dashboard', roles: ['admin'] },
     { path: '/admin/reports', icon: 'bi-bar-chart-line', name: 'Reports', roles: ['admin'] },
     { path: '/admin/products', icon: 'bi-box-seam', name: 'Products', roles: ['admin', 'staff'] },
     { path: '/admin/orders', icon: 'bi-cart3', name: 'Orders', roles: ['admin', 'staff', 'delivery'] },
     { path: '/admin/categories', icon: 'bi-tags', name: 'Categories', roles: ['admin', 'staff'] },
+    { path: '/admin/category-carousels', icon: 'bi-collection-play-fill', name: 'Category Carousels', roles: ['admin', 'staff'] },
     { path: '/admin/users', icon: 'bi-people', name: 'Users', roles: ['admin'] },
     { path: '/admin/reviews', icon: 'bi-star', name: 'Reviews', roles: ['admin'] },
     { path: '/admin/help-messages', icon: 'bi-envelope', name: 'Help Messages', roles: ['admin'] }, 
@@ -66,9 +82,22 @@ function AdminLayout() {
             </button>
             <h4 className="mb-0 d-none d-md-block">Admin Panel</h4>
           </div>
+
+          {/* 6. REPLACE THE STATIC HEADER WITH THE DYNAMIC DROPDOWN */}
           <div className="d-flex align-items-center">
-            <span className="me-3">Welcome, {currentUser?.displayName || userRole.charAt(0).toUpperCase() + userRole.slice(1)}!</span>
-            <img src={currentUser?.photoURL || "https://i.pravatar.cc/40"} alt="Admin" className="rounded-circle" />
+            <span className="me-3 d-none d-sm-inline">Welcome, {currentUser?.displayName || userRole}!</span>
+            <div className="dropdown">
+              <button className="btn btn-light rounded-circle p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src={currentUser?.photoURL || "https://i.pravatar.cc/40"} alt="Admin" className="rounded-circle" style={{width: '40px', height: '40px'}} />
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end">
+                  <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                          <i className="bi bi-box-arrow-right me-2"></i>Logout
+                      </button>
+                  </li>
+              </ul>
+            </div>
           </div>
         </header>
 

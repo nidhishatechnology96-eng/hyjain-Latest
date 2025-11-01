@@ -13,7 +13,7 @@ import AdminProvider from "./AdminPanel/AdminContext";
 // Import Layout Components
 import Navbar from "./components/Navbar/Navbar";
 import HomeFooter from './components/Homefooter/HomeFooter';
-import Footer from "./components/Footer/Footer"; // Re-import the main footer
+import Footer from "./components/Footer/Footer";
 import AdminLoginPage from "./Authentication/AdminLoginPage";
 
 // Import All Your Pages
@@ -40,7 +40,8 @@ import NewsAndMedia from './components/NewsandMedia/NewsAndMedia';
 import People from './components/People/People'; 
 import ArticleDetailPage from './components/ArticleDetailPage'; 
 import AboutUsPage from './components/AboutUsPage/AboutUsPage';
-import AllProductsPage from "./components/Shop/AllProductsPage";
+// --- 1. REMOVED: No longer need to import AllProductsPage ---
+// import AllProductsPage from "./components/Shop/AllProductsPage"; 
 import SubCategoryPage from "./components/Shop/SubCategoryPage";
 import CategoryPage from "./components/Shop/CategoryPage";
 import CancellationsandReturns from './components/InfoPage/CancellationsandReturns';
@@ -56,29 +57,15 @@ function AppLayout() {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
 
-  // --- THIS IS THE CORRECT LOGIC YOU WANT ---
-  // 1. Create a list of pages that should show the simple HomeFooter.
+  // --- Footer logic (this part is correct and remains the same) ---
   const homeAndDropdownPaths = [
-    '/', // The Home page
-    '/about-us',
-    '/international-business',
-    '/signature-outlets',
-    '/news-media',
-    '/people',
+    '/', '/about-us', '/international-business', '/signature-outlets', '/news-media', '/people',
   ];
-
-  // 2. Check if the current page is in that list.
   const showHomeFooter = homeAndDropdownPaths.includes(location.pathname);
-
-  // 3. A helper function to make the final choice clear.
   const renderFooter = () => {
-    if (isAdminPage) {
-      return null; // No footer on admin pages
-    }
-    if (showHomeFooter) {
-      return <HomeFooter />; // For Home and its dropdown pages
-    }
-    return <Footer />; // For ALL other pages (Shop, Contact, etc.)
+    if (isAdminPage) return null;
+    if (showHomeFooter) return <HomeFooter />;
+    return <Footer />;
   };
 
   return (
@@ -87,7 +74,7 @@ function AppLayout() {
       
       <main className="main-content">
         <Routes>
-          {/* All your routes stay the same */}
+          {/* ... (All other routes remain the same) ... */}
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/contact" element={<ContactUs />} />
@@ -118,14 +105,18 @@ function AppLayout() {
           <Route path="/ShippingFeesandDelivery" element={<ShippingFeesandDelivery />} />
           <Route path="/payments" element={<Payments />} />
           <Route path="/track-order" element={<TrackOrder />} />
-          <Route path="/products" element={<AllProductsPage />} />
+          
+          {/* --- 2. THE ROUTING FIX IS HERE --- */}
+          {/* This one line replaces the old "/products" route */}
+          <Route path="/products" element={<CategoryPage />} />
+          
+          {/* These two lines remain the same, but now work with the consolidated logic */}
           <Route path="/category/:categoryName" element={<CategoryPage />} />
-          <Route path="/subcategory/:subCategoryName" element={<SubCategoryPage />} />
+          <Route path="/subcategory/:subCategoryName" element={<SubCategoryPage />} /> {/* Corrected path parameter */}
+          
         </Routes>
       </main>
 
-      {/* --- CORRECTED Footer Logic --- */}
-      {/* This calls our helper function to render the correct footer */}
       {renderFooter()}
     </>
   );

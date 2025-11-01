@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function PaymentStep({ onPaymentSubmit, onBack, isProcessing, error }) {
+// 1. Receive 'cartTotal' as a prop from the parent component.
+function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }) {
     const [selectedMethod, setSelectedMethod] = useState('cod');
     const [cardDetails, setCardDetails] = useState({ number: '', name: '', expiry: '', cvc: '' });
     const [upiId, setUpiId] = useState('');
     const [formErrors, setFormErrors] = useState({});
 
-    // Handler for card input changes
+    // 2. Define the threshold and check if COD should be disabled.
+    const COD_THRESHOLD = 50000;
+    const isCodDisabled = cartTotal >= COD_THRESHOLD;
+
+    // 3. Add a useEffect to handle the case where COD is selected but becomes disabled.
+    // This automatically switches to a valid payment method.
+    useEffect(() => {
+        if (isCodDisabled && selectedMethod === 'cod') {
+            setSelectedMethod('card'); // Default to 'card' or 'upi' if COD is not allowed
+        }
+    }, [isCodDisabled, selectedMethod]);
+
+
+    // Handler for card input changes (no changes here)
     const handleCardChange = (e) => {
         const { name, value } = e.target;
         setCardDetails(prev => ({ ...prev, [name]: value }));
-        // Clear error when user starts typing
         if (formErrors[name]) {
             setFormErrors(prev => ({ ...prev, [name]: null }));
         }
     };
     
-    // --- VALIDATION LOGIC ---
+    // Validation Logic (no changes here)
     const validate = () => {
         const newErrors = {};
         if (selectedMethod === 'card') {
@@ -32,19 +45,16 @@ function PaymentStep({ onPaymentSubmit, onBack, isProcessing, error }) {
         return newErrors;
     };
 
-    // --- SUBMISSION LOGIC ---
+    // Submission Logic (no changes here)
     const handleSubmit = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setFormErrors(validationErrors);
-            return; // Stop submission if there are errors
+            return;
         }
 
         let paymentInfo = { method: 'Cash on Delivery', details: "To be paid upon delivery." };
         if (selectedMethod === 'card') {
-            // IMPORTANT: In a real app, you would use a payment gateway (Stripe, Razorpay)
-            // and would NOT handle or store full card details yourself for security reasons.
-            // We are only storing the last 4 digits as an example.
             paymentInfo = { 
                 method: 'Credit or Debit Card', 
                 details: { cardLast4: cardDetails.number.slice(-4) } 
@@ -55,7 +65,7 @@ function PaymentStep({ onPaymentSubmit, onBack, isProcessing, error }) {
                 details: { upiId } 
             };
         }
-        onPaymentSubmit(paymentInfo); // Send validated info to CheckoutFlow
+        onPaymentSubmit(paymentInfo);
     };
 
     return (
@@ -63,25 +73,40 @@ function PaymentStep({ onPaymentSubmit, onBack, isProcessing, error }) {
             <h3 className="mb-4 text-center fw-light">Select Payment Method</h3>
             
             <div className="list-group list-group-flush mb-4">
-                {['card', 'upi', 'cod'].map(method => (
-                    <label key={method} className="list-group-item list-group-item-action d-flex align-items-center p-3">
-                        <input 
-                            className="form-check-input me-3" 
-                            type="radio" 
-                            name="paymentMethod" 
-                            value={method}
-                            checked={selectedMethod === method}
-                            onChange={() => { setSelectedMethod(method); setFormErrors({}); }}
-                        />
-                        <i className={`bi ${method === 'card' ? 'bi-credit-card-fill' : method === 'upi' ? 'bi-qr-code' : 'bi-truck'} me-2 text-primary fs-5`}></i>
-                        <span>
-                            {method === 'card' ? 'Credit or Debit Card' : method === 'upi' ? 'UPI / Net Banking' : 'Cash on Delivery'}
-                        </span>
-                    </label>
-                ))}
+                {['card', 'upi', 'cod'].map(method => {
+                    // 4. Determine if the current option in the loop is the one to be disabled.
+                    const isDisabled = method === 'cod' && isCodDisabled;
+
+                    return (
+                        <label 
+                            key={method} 
+                            className={`list-group-item list-group-item-action d-flex align-items-center p-3 ${isDisabled ? 'disabled-option' : ''}`}
+                            style={isDisabled ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+                        >
+                            <input 
+                                className="form-check-input me-3" 
+                                type="radio" 
+                                name="paymentMethod" 
+                                value={method}
+                                checked={selectedMethod === method}
+                                onChange={() => { setSelectedMethod(method); setFormErrors({}); }}
+                                disabled={isDisabled} // Disable the radio button itself
+                            />
+                            <i className={`bi ${method === 'card' ? 'bi-credit-card-fill' : method === 'upi' ? 'bi-qr-code' : 'bi-truck'} me-2 text-primary fs-5`}></i>
+                            <span className="flex-grow-1">
+                                {method === 'card' ? 'Credit or Debit Card' : method === 'upi' ? 'UPI / Net Banking' : 'Cash on Delivery'}
+                            </span>
+                            
+                            {/* 5. Show a message explaining why COD is disabled. */}
+                            {isDisabled && (
+                                <span className="badge bg-light text-dark ms-2">Not available for orders over ₹50,000</span>
+                            )}
+                        </label>
+                    );
+                })}
             </div>
 
-            {/* --- DYNAMIC CREDIT CARD FORM --- */}
+            {/* --- DYNAMIC FORMS (No changes needed below) --- */}
             {selectedMethod === 'card' && (
                 <div className="p-3 bg-light rounded border mb-3">
                     <div className="mb-3">
@@ -108,8 +133,6 @@ function PaymentStep({ onPaymentSubmit, onBack, isProcessing, error }) {
                     </div>
                 </div>
             )}
-
-            {/* --- DYNAMIC UPI FORM --- */}
             {selectedMethod === 'upi' && (
                 <div className="p-3 bg-light rounded border mb-3">
                     <div className="mb-3">

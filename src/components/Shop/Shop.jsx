@@ -128,11 +128,21 @@ const Shop = () => {
           <p className="text-muted mb-5 mt-3">Find what you're looking for with our curated categories.</p>
           <div className="row g-4 justify-content-center">
             <div className="col-6 col-md-4 col-lg-2">
-              <Link to="/products" className="category-card-shop-link"><div className="category-card-shop"><div className="category-card-shop-icon"><i className="bi bi-grid-fill"></i></div><h6 className="category-card-shop-name">All Products</h6></div></Link>
+              <Link to={`/category/${encodeURIComponent('All Products')}`} className="category-card-shop-link">
+                  <div className="category-card-shop">
+                    <div className="category-card-shop-icon"><i className="bi bi-grid-fill"></i></div>
+                    <h6 className="category-card-shop-name">All Products</h6>
+                  </div>
+              </Link>
             </div>
             {categories.map(cat => (
               <div key={cat.id} className="col-6 col-md-4 col-lg-2">
-                <Link to={`/category/${encodeURIComponent(cat.name)}`} className="category-card-shop-link"><div className="category-card-shop"><img src={cat.imageUrl} alt={cat.name} className="category-card-shop-img" /><h6 className="category-card-shop-name">{cat.name}</h6></div></Link>
+                <Link to={`/category/${encodeURIComponent(cat.name)}`} className="category-card-shop-link">
+                  <div className="category-card-shop">
+                    <img src={cat.imageUrl} alt={cat.name} className="category-card-shop-img" />
+                    <h6 className="category-card-shop-name">{cat.name}</h6>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>

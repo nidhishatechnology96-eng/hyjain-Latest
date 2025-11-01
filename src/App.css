@@ -99,5 +99,24 @@
   margin-right: 1rem;
 }
 
+.product-grid-page {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Add these styles at the top of your App.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Navbar adjustments if needed */
+.navbar {
+    margin-bottom: 0;
+}
+
 
 

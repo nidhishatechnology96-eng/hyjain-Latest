@@ -15,6 +15,8 @@ import SubscribersManagement from "./SubscribersManagement";
 import SlideshowManagement from "./SlideshowManagement";
 import Settings from "./Settings";
 import Reports from "./Reports";
+
+import CategoryCarouselManagement from "./CategoryCarouselManagement";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RoleBasedRoute = ({ allowedRoles, children }) => {
@@ -64,6 +66,10 @@ function Admin() {
         <Route path="reports" element={ <RoleBasedRoute allowedRoles={['admin']}><Reports /></RoleBasedRoute> } />
         <Route path="slideshow" element={ <RoleBasedRoute allowedRoles={['admin']}><SlideshowManagement /></RoleBasedRoute> } />
         <Route path="settings" element={ <RoleBasedRoute allowedRoles={['admin']}><Settings /></RoleBasedRoute> } />
+
+
+
+          <Route path="category-carousels" element={ <RoleBasedRoute allowedRoles={['admin', 'staff']}><CategoryCarouselManagement /></RoleBasedRoute> } />
       
       </Route>
     </Routes>

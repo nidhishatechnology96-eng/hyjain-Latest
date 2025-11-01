@@ -522,3 +522,154 @@
     gap: 1.5rem;
   }
 }
+
+/* Add these new styles to your ProductGrid.css file */
+
+.category-header-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px; /* Ensures space for the button */
+    margin-bottom: 30px;
+}
+
+.back-to-shop-button {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    
+    padding: 10px 20px;
+    background-color: #e3f0e3; /* Light green background from your image */
+    color: #006442; /* Dark green text */
+    border-radius: 50px; /* Pill shape */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background-color 0.2s ease-in-out;
+    border: 1px solid rgba(0, 100, 66, 0.2);
+}
+
+.back-to-shop-button:hover {
+    background-color: #d4e8d4;
+    color: #006442;
+}
+
+.product-grid-header .page-title {
+    color: #006442;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.product-grid-header .product-count {
+    color: #555;
+    font-size: 1rem;
+}
+
+
+/* Responsive adjustments for the header */
+@media (max-width: 768px) {
+    .category-header-container {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 60px; /* Make space for button to sit on top */
+        margin-bottom: 20px;
+    }
+
+    .back-to-shop-button {
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: max-content; /* Ensure it doesn't stretch full width */
+    }
+
+    .product-grid-header {
+        text-align: center;
+    }
+}
+
+
+
+
+
+
+/* src/Shop/ProductGrid.css */
+
+/* --- STYLES FOR SHOP BY CATEGORY SECTION --- */
+
+.shop-by-category-section {
+    padding: 60px 0;
+    background-color: #f8fbf8; /* A very light green background */
+}
+
+.shop-by-category-section .section-title {
+    font-weight: 700;
+    color: #006442;
+}
+
+.category-circles-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.category-circle-card {
+    cursor: pointer;
+    text-align: center;
+    width: 150px; /* Adjust width as needed */
+    transition: transform 0.2s ease-in-out;
+}
+
+.category-circle-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #eef5ee, #ffffff);
+    box-shadow: 5px 5px 15px #d9e0d9, -5px -5px 15px #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px; /* Padding for the image inside */
+    transition: all 0.3s ease;
+}
+
+.category-circle-card.active .category-circle {
+    box-shadow: inset 5px 5px 10px #d9e0d9, inset -5px -5px 10px #ffffff;
+    border: 2px solid #008060;
+}
+
+.category-circle img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.category-circle.all-products-bg {
+    font-size: 3rem;
+    color: #006442;
+}
+
+.category-circle-card .category-title {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* --- (Keep your other existing styles for timeline, product cards, etc.) --- */
+
+
+
+

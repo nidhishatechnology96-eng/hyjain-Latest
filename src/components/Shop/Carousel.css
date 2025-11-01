@@ -1,14 +1,130 @@
-/* Paste the CSS code from the previous answer here */
-.carousel-container { width: 100%; margin: 0 auto 40px auto; position: relative; overflow: hidden; border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-.carousel-slides { display: flex; transition: transform 0.5s ease-in-out; }
-.carousel-slide { min-width: 100%; box-sizing: border-box; }
-.carousel-slide img { width: 100%; display: block; height: 450px; object-fit: cover; }
-.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.45); color: white; border: none; font-size: 28px; cursor: pointer; border-radius: 50%; z-index: 10; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: background-color 0.3s; user-select: none; }
-.carousel-btn:hover { background-color: rgba(0, 0, 0, 0.7); }
-.carousel-btn.prev { left: 15px; }
-.carousel-btn.next { right: 15px; }
-.carousel-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.2); cursor: pointer; transition: background-color 0.3s, transform 0.3s; }
-.dot:hover { transform: scale(1.2); }
-.dot.active { background-color: white; }
-@media (max-width: 768px) { .carousel-slide img { height: 250px; } .carousel-btn { font-size: 20px; width: 40px; height: 40px; } .dot { width: 10px; height: 10px; } }
+.carousel-container {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- THIS IS THE FIX --- */
+/* Style for all carousel images */
+.carousel-image {
+    width: 100%;
+    /* REMOVED: display: block; -- This was the line causing the problem */
+    height: 450px;
+    /* Default desktop height */
+    object-fit: cover;
+}
+
+/* By default on large screens, show the desktop image and hide the mobile one */
+.carousel-image-desktop {
+    display: block;
+}
+
+.carousel-image-mobile {
+    display: none;
+}
+
+/* --- END OF THE FIX --- */
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.45);
+    color: white;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    user-select: none;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-btn.prev {
+    left: 15px;
+}
+
+.carousel-btn.next {
+    right: 15px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.dot:hover {
+    transform: scale(1.2);
+}
+
+.dot.active {
+    background-color: white;
+}
+
+/* On screens 768px or less, reverse the display properties */
+@media (max-width: 768px) {
+
+    /* Adjust the height for mobile */
+    .carousel-image {
+        height: 250px;
+    }
+
+    /* Hide the desktop image */
+    .carousel-image-desktop {
+        display: none;
+    }
+
+    /* Show the mobile image */
+    .carousel-image-mobile {
+        display: block;
+    }
+
+    /* Other responsive styles */
+    .carousel-btn {
+        font-size: 20px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+}

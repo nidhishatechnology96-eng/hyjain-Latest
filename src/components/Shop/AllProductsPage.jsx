@@ -1,21 +1,32 @@
-import React, { useContext } from 'react';
+// src/Shop/AllProductsPage.jsx (or rename to ShopPage.jsx)
+
+import React, { useState, useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { AdminContext } from '../../AdminPanel/AdminContext';
 import { CartContext } from '../../context/CartContext';
+import Carousel from './Carousel'; // We'll need the carousel component
 import './ProductGrid.css'; // This file will contain all the necessary styles
 
-// ===================================================================
-//  NEW COMPONENT: ShopByCategorySection (Styled like your image)
-// ===================================================================
+// We'll define the carousel images here, including a set for "All Products"
+const categoryCarouselImages = {
+    'All Products': [
+        { desktopImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2874&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1587393855524-h2c16c352a9e?q=80&w=2874&auto=format&fit=crop' },
+        { desktopImage: 'https://images.unsplash.com/photo-1599529398829-70725a1cbd4f?q=80&w=2070&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1599529398829-70725a1cbd4f?q=80&w=2070&auto=format&fit=crop' },
+    ],
+    // This will be merged with dynamic data from your categories later
+};
 
+// ===================================================================
+//  ShopByCategorySection Component (Unchanged from your code)
+// ===================================================================
 function ShopByCategorySection({ categories = [], onCategorySelect, selectedCategory }) {
+    // This component will now work correctly because we pass the right props.
     return (
         <section className="shop-by-category-section text-center">
             <h2 className="section-title">Shop by Category</h2>
             <p className="text-muted mb-5 mt-3">Find what you're looking for with our curated categories.</p>
             
             <div className="category-circles-container">
-                {/* Static "All Products" Card */}
                 <div 
                     className={`category-circle-card ${selectedCategory === 'All Products' ? 'active' : ''}`}
                     onClick={() => onCategorySelect('All Products')}
@@ -25,8 +36,6 @@ function ShopByCategorySection({ categories = [], onCategorySelect, selectedCate
                     </div>
                     <h6 className="category-title">All Products</h6>
                 </div>
-
-                {/* Dynamic Category Cards */}
                 {categories.map((cat) => (
                     <div 
                         key={cat.id} 
@@ -44,14 +53,41 @@ function ShopByCategorySection({ categories = [], onCategorySelect, selectedCate
     );
 }
 
-// ===================================================================
-//  MAIN COMPONENT: AllProductsPage
-// ===================================================================
 
+// ===================================================================
+//  MAIN COMPONENT: AllProductsPage (Now with state and dynamic content)
+// ===================================================================
 function AllProductsPage() {
-  // We now get 'categories' from the context as well
   const { products, categories, isLoading } = useContext(AdminContext);
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  
+  // 1. ADD STATE to track the currently selected category
+  const [selectedCategory, setSelectedCategory] = useState('All Products');
+
+  // 2. CREATE A HANDLER to update the state when a category is clicked
+  const handleCategorySelect = (categoryName) => {
+    setSelectedCategory(categoryName);
+    window.scrollTo(0, 0); // Optional: scroll to top on category change
+  };
+
+  // 3. FILTER PRODUCTS based on the selected category
+  const filteredProducts = useMemo(() => {
+    if (selectedCategory === 'All Products') {
+      return products || [];
+    }
+    return (products || []).filter(p => p.category === selectedCategory);
+  }, [products, selectedCategory]);
+
+  // 4. GET CAROUSEL IMAGES based on the selected category
+  const imagesForCarousel = useMemo(() => {
+    if (selectedCategory === 'All Products') {
+        return categoryCarouselImages['All Products'];
+    }
+    const currentCategoryData = (categories || []).find(cat => cat.name === selectedCategory);
+    // Use the dynamic images from Firebase, or an empty array if none exist
+    return currentCategoryData?.carouselImages || [];
+  }, [categories, selectedCategory]);
+
 
   if (isLoading) {
     return <div className="container my-5 text-center"><div className="spinner-border text-primary"></div></div>;
@@ -60,30 +96,33 @@ function AllProductsPage() {
   return (
     <div className="product-grid-page">
       <div className="background-graphics">
-        <div className="circle c1"></div>
-        <div className="circle c2"></div>
-        <div className="circle c3"></div>
+        {/* ... your background graphics ... */}
       </div>
       <div className="container py-5">
-        <div className="product-grid-header mb-5">
-          <Link to="/shop" className="back-to-shop-link">
-            <i className="bi bi-arrow-left-circle me-2"></i>Back to Shop
-          </Link>
-          <h1 className="page-title text-center">All Products</h1>
-          <p className="product-count text-center text-muted">
-            {products.length} products found
+        
+        {/* --- DYNAMIC CAROUSEL RENDERED HERE --- */}
+        <Carousel images={imagesForCarousel} />
+        
+        <div className="product-grid-header mb-5 text-center">
+          {/* Title and count are now dynamic based on state */}
+          <h1 className="page-title">{selectedCategory}</h1>
+          <p className="product-count text-muted">
+            {filteredProducts.length} products found
           </p>
         </div>
 
+        {/* --- PRODUCT GRID RENDERED HERE (uses filteredProducts) --- */}
         <div className="row g-4">
-          {products.map((product) => {
+          {filteredProducts.map((product) => {
             const isInCart = cart.some(item => item.id === product.id);
+            const placeholderImage = 'https://via.placeholder.com/400x400.png?text=No+Image';
+            const imageUrl = (product.images && product.images[0]) || product.image || placeholderImage;
             return (
               <div key={product.id} className="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div className="product-card-grid h-100">
                   <Link to={`/product/${product.id}`} className="text-decoration-none d-flex flex-column h-100">
                     <div className="product-image-container">
-                      <img src={(product.images && product.images[0]) || product.image} alt={product.name} className="card-img-top" />
+                      <img src={imageUrl} alt={product.name} className="card-img-top" />
                     </div>
                     <div className="card-body d-flex flex-column p-3 text-start">
                       <h5 className="card-title fs-6 text-dark flex-grow-1">{product.name}</h5>
@@ -104,10 +143,16 @@ function AllProductsPage() {
         </div>
       </div>
       
-      {/* --- RENDER THE NEW CATEGORY SECTION HERE --- */}
-      <ShopByCategorySection categories={categories} />
+      {/* --- RENDER THE CATEGORY SECTION & PASS PROPS --- */}
+      <ShopByCategorySection 
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+      />
 
       {/* --- MANUFACTURING PROCESS SECTION --- */}
+      <section className="manufacturing-process py-5">
+         {/* --- MANUFACTURING PROCESS SECTION --- */}
       <section className="manufacturing-process py-5">
         <div className="container">
           <div className="row">
@@ -137,6 +182,7 @@ function AllProductsPage() {
             </div>
           </div>
         </div>
+      </section>
       </section>
     </div>
   );
