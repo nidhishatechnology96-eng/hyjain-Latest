@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// 1. Receive 'cartTotal' as a prop from the parent component.
 function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }) {
     const [selectedMethod, setSelectedMethod] = useState('cod');
     const [cardDetails, setCardDetails] = useState({ number: '', name: '', expiry: '', cvc: '' });
     const [upiId, setUpiId] = useState('');
     const [formErrors, setFormErrors] = useState({});
 
-    // 2. Define the threshold and check if COD should be disabled.
-    const COD_THRESHOLD = 50000;
+    // ✅ UPDATED: Changed the threshold from 50000 to 100000
+    const COD_THRESHOLD = 100000;
     const isCodDisabled = cartTotal >= COD_THRESHOLD;
 
-    // 3. Add a useEffect to handle the case where COD is selected but becomes disabled.
-    // This automatically switches to a valid payment method.
+    // This effect ensures if COD is disabled, another method is automatically selected.
     useEffect(() => {
         if (isCodDisabled && selectedMethod === 'cod') {
-            setSelectedMethod('card'); // Default to 'card' or 'upi' if COD is not allowed
+            setSelectedMethod('card');
         }
     }, [isCodDisabled, selectedMethod]);
 
-
-    // Handler for card input changes (no changes here)
     const handleCardChange = (e) => {
         const { name, value } = e.target;
         setCardDetails(prev => ({ ...prev, [name]: value }));
@@ -30,7 +26,6 @@ function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }
         }
     };
     
-    // Validation Logic (no changes here)
     const validate = () => {
         const newErrors = {};
         if (selectedMethod === 'card') {
@@ -45,7 +40,6 @@ function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }
         return newErrors;
     };
 
-    // Submission Logic (no changes here)
     const handleSubmit = () => {
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
@@ -74,7 +68,6 @@ function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }
             
             <div className="list-group list-group-flush mb-4">
                 {['card', 'upi', 'cod'].map(method => {
-                    // 4. Determine if the current option in the loop is the one to be disabled.
                     const isDisabled = method === 'cod' && isCodDisabled;
 
                     return (
@@ -90,77 +83,41 @@ function PaymentStep({ cartTotal, onPaymentSubmit, onBack, isProcessing, error }
                                 value={method}
                                 checked={selectedMethod === method}
                                 onChange={() => { setSelectedMethod(method); setFormErrors({}); }}
-                                disabled={isDisabled} // Disable the radio button itself
+                                disabled={isDisabled}
                             />
                             <i className={`bi ${method === 'card' ? 'bi-credit-card-fill' : method === 'upi' ? 'bi-qr-code' : 'bi-truck'} me-2 text-primary fs-5`}></i>
                             <span className="flex-grow-1">
                                 {method === 'card' ? 'Credit or Debit Card' : method === 'upi' ? 'UPI / Net Banking' : 'Cash on Delivery'}
                             </span>
                             
-                            {/* 5. Show a message explaining why COD is disabled. */}
+                            {/* ✅ UPDATED: Changed the message text */}
                             {isDisabled && (
-                                <span className="badge bg-light text-dark ms-2">Not available for orders over ₹50,000</span>
+                                <span className="badge bg-light text-dark ms-2">Not available for orders over ₹1,00,000</span>
                             )}
                         </label>
                     );
                 })}
             </div>
 
-            {/* --- DYNAMIC FORMS (No changes needed below) --- */}
             {selectedMethod === 'card' && (
                 <div className="p-3 bg-light rounded border mb-3">
-                    <div className="mb-3">
-                        <label className="form-label small">Card Number</label>
-                        <input type="text" name="number" value={cardDetails.number} onChange={handleCardChange} className={`form-control ${formErrors.number ? 'is-invalid' : ''}`} placeholder="•••• •••• •••• ••••" />
-                        {formErrors.number && <div className="invalid-feedback">{formErrors.number}</div>}
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label small">Name on Card</label>
-                        <input type="text" name="name" value={cardDetails.name} onChange={handleCardChange} className={`form-control ${formErrors.name ? 'is-invalid' : ''}`} placeholder="John Doe" />
-                        {formErrors.name && <div className="invalid-feedback">{formErrors.name}</div>}
-                    </div>
-                    <div className="row">
-                        <div className="col-6">
-                            <label className="form-label small">Expiry (MM/YY)</label>
-                            <input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} className={`form-control ${formErrors.expiry ? 'is-invalid' : ''}`} placeholder="MM/YY" />
-                            {formErrors.expiry && <div className="invalid-feedback">{formErrors.expiry}</div>}
-                        </div>
-                        <div className="col-6">
-                            <label className="form-label small">CVC</label>
-                            <input type="text" name="cvc" value={cardDetails.cvc} onChange={handleCardChange} className={`form-control ${formErrors.cvc ? 'is-invalid' : ''}`} placeholder="123" />
-                            {formErrors.cvc && <div className="invalid-feedback">{formErrors.cvc}</div>}
-                        </div>
-                    </div>
+                    <div className="mb-3"><label className="form-label small">Card Number</label><input type="text" name="number" value={cardDetails.number} onChange={handleCardChange} className={`form-control ${formErrors.number ? 'is-invalid' : ''}`} placeholder="•••• •••• •••• ••••" />{formErrors.number && <div className="invalid-feedback">{formErrors.number}</div>}</div>
+                    <div className="mb-3"><label className="form-label small">Name on Card</label><input type="text" name="name" value={cardDetails.name} onChange={handleCardChange} className={`form-control ${formErrors.name ? 'is-invalid' : ''}`} placeholder="John Doe" />{formErrors.name && <div className="invalid-feedback">{formErrors.name}</div>}</div>
+                    <div className="row"><div className="col-6"><label className="form-label small">Expiry (MM/YY)</label><input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardChange} className={`form-control ${formErrors.expiry ? 'is-invalid' : ''}`} placeholder="MM/YY" />{formErrors.expiry && <div className="invalid-feedback">{formErrors.expiry}</div>}</div><div className="col-6"><label className="form-label small">CVC</label><input type="text" name="cvc" value={cardDetails.cvc} onChange={handleCardChange} className={`form-control ${formErrors.cvc ? 'is-invalid' : ''}`} placeholder="123" />{formErrors.cvc && <div className="invalid-feedback">{formErrors.cvc}</div>}</div></div>
                 </div>
             )}
             {selectedMethod === 'upi' && (
                 <div className="p-3 bg-light rounded border mb-3">
-                    <div className="mb-3">
-                        <label className="form-label small">Enter UPI ID</label>
-                         <input type="text" value={upiId} onChange={(e) => {setUpiId(e.target.value); if(formErrors.upiId) setFormErrors({});}} className={`form-control ${formErrors.upiId ? 'is-invalid' : ''}`} placeholder="yourname@bank" />
-                         {formErrors.upiId && <div className="invalid-feedback">{formErrors.upiId}</div>}
-                    </div>
-                    <div className="text-center">
-                        <p className="text-muted small my-2">OR</p>
-                        <h6>Scan to Pay</h6>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=your-upi-id@okhdfcbank" alt="UPI QR Code" />
-                    </div>
+                    <div className="mb-3"><label className="form-label small">Enter UPI ID</label><input type="text" value={upiId} onChange={(e) => {setUpiId(e.target.value); if(formErrors.upiId) setFormErrors({});}} className={`form-control ${formErrors.upiId ? 'is-invalid' : ''}`} placeholder="yourname@bank" />{formErrors.upiId && <div className="invalid-feedback">{formErrors.upiId}</div>}</div>
+                    <div className="text-center"><p className="text-muted small my-2">OR</p><h6>Scan to Pay</h6><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=your-upi-id@okhdfcbank" alt="UPI QR Code" /></div>
                 </div>
             )}
             
             {error && <div className="alert alert-danger mt-3">{error}</div>}
 
             <div className="d-flex flex-column-reverse flex-sm-row justify-content-between gap-3 mt-4">
-                <button type="button" className="btn btn-outline-secondary w-100" onClick={onBack} disabled={isProcessing}>
-                    <i className="bi bi-arrow-left me-1"></i>Back to Address
-                </button>
-                <button className="btn btn-primary btn-lg w-100" onClick={handleSubmit} disabled={isProcessing}>
-                    {isProcessing ? (
-                        <><span className="spinner-border spinner-border-sm me-2"></span>Placing Order...</>
-                    ) : (
-                       'Place Order'
-                    )}
-                </button>
+                <button type="button" className="btn btn-outline-secondary w-100" onClick={onBack} disabled={isProcessing}><i className="bi bi-arrow-left me-1"></i>Back to Address</button>
+                <button className="btn btn-primary btn-lg w-100" onClick={handleSubmit} disabled={isProcessing}>{isProcessing ? (<><span className="spinner-border spinner-border-sm me-2"></span>Placing Order...</>) : ('Place Order')}</button>
             </div>
         </div>
     );

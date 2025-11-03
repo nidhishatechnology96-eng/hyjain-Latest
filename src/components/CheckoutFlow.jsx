@@ -48,11 +48,8 @@ function CheckoutFlow() {
     };
 
     try {
-      // Because of our fix, 'orderId' will now be a clean string like "aBcDeFg123"
       const orderId = await addOrder(orderData); 
       clearCart();
-      
-      // This will now navigate to the correct URL, e.g., "/order-confirmation/aBcDeFg123"
       navigate(`/order-confirmation/${orderId}`); 
     } catch (err) {
       setError("Failed to place order. Please try again.");
@@ -70,7 +67,8 @@ function CheckoutFlow() {
       <div className="row">
         <div className="col-lg-7">
           {step === 1 && <AddressStep onAddressSubmit={handleAddressSubmit} />}
-          {step === 2 && <PaymentStep onPaymentSubmit={handlePaymentSubmit} onBack={handleBack} isProcessing={isProcessing} error={error} />}
+          {/* ✅ UPDATED: Pass the 'total' to PaymentStep as the cartTotal prop */}
+          {step === 2 && <PaymentStep cartTotal={total} onPaymentSubmit={handlePaymentSubmit} onBack={handleBack} isProcessing={isProcessing} error={error} />}
         </div>
         <div className="col-lg-5">
             <div className="mt-4 mt-lg-0">
@@ -80,16 +78,6 @@ function CheckoutFlow() {
       </div>
     </div>
   );
-}
-// ... inside the handlePaymentSubmit function ...
-try {
-  const orderId = await addOrder(orderData);
-  clearCart();
-  
-  // This line sends the user to a URL like "/order-confirmation/some-real-id"
-  navigate(`/order-confirmation/${orderId}`); 
-} catch (err) {
-  // ... error handling ...
 }
 
 export default CheckoutFlow;
