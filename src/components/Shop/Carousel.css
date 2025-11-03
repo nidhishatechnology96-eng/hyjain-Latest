@@ -21,11 +21,10 @@
 /* --- THIS IS THE FIX --- */
 /* Style for all carousel images */
 .carousel-image {
-    width: 100%;
-    /* REMOVED: display: block; -- This was the line causing the problem */
-    height: 450px;
-    /* Default desktop height */
+   width: 100%;
+    height: 450px; /* Default desktop height */
     object-fit: cover;
+    object-position: center;
 }
 
 /* By default on large screens, show the desktop image and hide the mobile one */

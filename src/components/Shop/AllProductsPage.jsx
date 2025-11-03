@@ -6,15 +6,8 @@ import { AdminContext } from '../../AdminPanel/AdminContext';
 import { CartContext } from '../../context/CartContext';
 import Carousel from './Carousel'; // We'll need the carousel component
 import './ProductGrid.css'; // This file will contain all the necessary styles
+``
 
-// We'll define the carousel images here, including a set for "All Products"
-const categoryCarouselImages = {
-    'All Products': [
-        { desktopImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2874&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1587393855524-h2c16c352a9e?q=80&w=2874&auto=format&fit=crop' },
-        { desktopImage: 'https://images.unsplash.com/photo-1599529398829-70725a1cbd4f?q=80&w=2070&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1599529398829-70725a1cbd4f?q=80&w=2070&auto=format&fit=crop' },
-    ],
-    // This will be merged with dynamic data from your categories later
-};
 
 // ===================================================================
 //  ShopByCategorySection Component (Unchanged from your code)

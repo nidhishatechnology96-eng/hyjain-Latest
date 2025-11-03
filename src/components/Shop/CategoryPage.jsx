@@ -45,7 +45,21 @@ function CategoryPage() {
     }, [products, decodedCategoryName]);
     
     const imagesForCarousel = decodedCategoryName === 'All Products'
-        ? [ { desktopImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2874&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1587393855524-h2c16c352a9e?q=80&w=2874&auto=format&fit=crop' } ]
+        ? [ { 
+            // A wide, vibrant image for desktop view
+            // FIX: The comma is now correctly placed *after* the closing quote.
+            desktopImage: 'https://static.vecteezy.com/system/resources/previews/029/639/556/large_2x/freshly-washed-kiwi-fruits-generative-ai-photo.jpg', 
+            
+            // A tall, vertically-oriented image that looks great on mobile
+            mobileImage: 'https://media.istockphoto.com/id/589415708/photo/fresh-fruits-and-vegetables.jpg?s=612x612&w=0&k=20&c=aBFGUU-98pnoht73co8r2TZIKF3MDtBBu9KSxtxK_C0=' 
+        },
+        { 
+            // A different wide image for the second slide on desktop
+            desktopImage: 'https://img.freepik.com/premium-photo/heap-fresh-fruits-vegetables-wooden-background_392895-486813.jpg?semt=ais_hybrid&w=740&q=80', 
+            
+            // A different tall image for the second slide on mobile
+            mobileImage: 'https://img.freepik.com/free-photo/mix-vegetable_1339-374.jpg' 
+        },]
         : currentCategory?.carouselImages || [];
 
     const isWaterTheme = decodedCategoryName === 'Water Bottles';
