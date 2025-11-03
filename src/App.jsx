@@ -53,6 +53,7 @@ import TermsAndConditions from './components/InfoPage/TermsAndConditions';
 import TrackOrder from './components/InfoPage/TrackOrder';
 
 
+
 function AppLayout() {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
@@ -105,6 +106,7 @@ function AppLayout() {
           <Route path="/ShippingFeesandDelivery" element={<ShippingFeesandDelivery />} />
           <Route path="/payments" element={<Payments />} />
           <Route path="/track-order" element={<TrackOrder />} />
+          
           
           {/* --- 2. THE ROUTING FIX IS HERE --- */}
           {/* This one line replaces the old "/products" route */}

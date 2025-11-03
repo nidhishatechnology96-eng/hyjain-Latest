@@ -1,9 +1,8 @@
-// src/Shop/CategoryPage.jsx
-
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { AdminContext } from '../../AdminPanel/AdminContext';
 import { CartContext } from '../../context/CartContext';
+import CategoryShowcase from './CategoryShowcase';
 import Carousel from './Carousel';
 import './ProductGrid.css';
 
@@ -15,7 +14,6 @@ function CategoryPage() {
     const [currentCategory, setCurrentCategory] = useState(null);
     const [isLoadingPage, setIsLoadingPage] = useState(true);
 
-    // This is the variable that holds the category name, like "All Products"
     const decodedCategoryName = useMemo(() => {
         return categoryName ? decodeURIComponent(categoryName) : "All Products";
     }, [categoryName]);
@@ -24,12 +22,11 @@ function CategoryPage() {
         const fetchCategoryData = async () => {
             setIsLoadingPage(true);
             try {
-                // Assuming "All Products" doesn't have specific data to fetch this way
                 if (decodedCategoryName !== "All Products") {
                     const categoryData = await getCategoryByName(decodedCategoryName);
                     setCurrentCategory(categoryData);
                 } else {
-                    setCurrentCategory(null); // Reset for "All Products"
+                    setCurrentCategory(null);
                 }
             } catch (error) {
                 console.error("Failed to fetch category data:", error);
@@ -38,6 +35,7 @@ function CategoryPage() {
             }
         };
         fetchCategoryData();
+        window.scrollTo(0, 0); // Scroll to top when category changes
     }, [decodedCategoryName, getCategoryByName]);
 
     const filteredProducts = useMemo(() => {
@@ -46,7 +44,6 @@ function CategoryPage() {
         return productList.filter(p => p.category === decodedCategoryName);
     }, [products, decodedCategoryName]);
     
-    // Use a default carousel for "All Products"
     const imagesForCarousel = decodedCategoryName === 'All Products'
         ? [ { desktopImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2874&auto=format&fit=crop', mobileImage: 'https://images.unsplash.com/photo-1587393855524-h2c16c352a9e?q=80&w=2874&auto=format&fit=crop' } ]
         : currentCategory?.carouselImages || [];
@@ -104,8 +101,10 @@ function CategoryPage() {
                 </div>
             </div>
 
-            {/* --- ✅ ADD THIS SECTION HERE --- */}
-            {/* This will now correctly show the manufacturing process only on the "All Products" page */}
+            {/* This component handles its own links and needs no extra props. */}
+            <CategoryShowcase />
+
+            {/* This section will only appear on the "All Products" page. */}
             {decodedCategoryName === 'All Products' && (
                 <section className="manufacturing-process py-5">
                     <div className="container">
