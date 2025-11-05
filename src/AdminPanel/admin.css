@@ -207,3 +207,182 @@
     content: '';
   }
 }
+
+
+
+
+
+/*
+=================================================================
+  GLOBAL & LAYOUT STYLES
+=================================================================
+*/
+
+:root {
+  --primary-color: #0d6efd; /* Bootstrap blue */
+  --sidebar-bg: #ffffff;
+  --main-bg: #f4f7fa;
+  --text-color-dark: #343a40;
+  --text-color-light: #6c757d;
+  --border-color: #dee2e6;
+  --link-hover-bg: #f0f3ff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--main-bg);
+  color: var(--text-color-dark);
+  margin: 0;
+}
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/*
+=================================================================
+  SIDEBAR STYLES (Offcanvas)
+=================================================================
+*/
+
+.admin-sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  width: 260px; /* Default width for large screens */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Ensure sidebar is always visible on large screens */
+@media (min-width: 992px) {
+  .admin-sidebar {
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
+
+.admin-sidebar .offcanvas-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.25rem;
+}
+
+.admin-sidebar .offcanvas-title {
+  color: var(--text-color-dark);
+}
+
+/* This container uses flex to push the logout button to the bottom */
+.admin-sidebar .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+/*
+=================================================================
+  NAVIGATION LINK STYLES
+=================================================================
+*/
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  margin: 0.2rem 0.75rem;
+  color: var(--text-color-light);
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link .bi {
+  margin-right: 1rem;
+  font-size: 1.1rem;
+  line-height: 1; /* Aligns icons better */
+}
+
+/* Hover state for all nav links */
+.nav-link:hover {
+  background-color: var(--link-hover-bg);
+  color: var(--primary-color);
+}
+
+/* Active state for the current page link */
+.nav-link.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+/*
+=================================================================
+  LOGOUT BUTTON STYLES
+=================================================================
+*/
+/* Wrapper pushes the button down. Use Bootstrap's `mt-auto` class. */
+.logout-wrapper {
+  margin-top: auto;
+}
+
+.logout-link {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  margin: 0.2rem 0.75rem;
+  margin-top: 1rem; /* Extra space above the logout button */
+  color: var(--text-color-light);
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.logout-link:hover {
+  background-color: #fff0f1; /* Light red for destructive action */
+  color: #dc3545; /* Bootstrap's danger red */
+}
+
+.logout-link .bi {
+  margin-right: 1rem;
+  font-size: 1.1rem;
+}
+
+/*
+=================================================================
+  MAIN CONTENT & HEADER STYLES
+=================================================================
+*/
+
+.admin-main-content {
+  flex-grow: 1;
+  width: calc(100% - 260px); /* Adjust width when sidebar is open */
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-header .dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.admin-header .dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+.admin-header .dropdown-item .bi {
+  margin-right: 0.75rem;
+}
+
+main.container-fluid {
+  padding: 1.5rem;
+}

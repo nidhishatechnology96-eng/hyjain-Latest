@@ -1,30 +1,29 @@
 import React, { useContext, useEffect } from 'react';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'; // 1. Added useNavigate
-import { AuthContext, getRole } from '../context/AuthContext'; // 2. Added getRole
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext, getRole } from '../context/AuthContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Dropdown, Offcanvas } from 'bootstrap';
 import './admin.css'; 
 
 function AdminLayout() {
-  const { currentUser, logout } = useContext(AuthContext); // 3. Correctly get currentUser and logout
+  const { currentUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const userRole = getRole(currentUser); // 4. Correctly derive userRole
+  const userRole = getRole(currentUser);
 
   useEffect(() => {
-    // This part is for initializing Bootstrap JS components and is correct
+    // Bootstrap JS component initialization
     const dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
-    dropdownElementList.map(function (dropdownToggleEl) {
-      return Dropdown.getOrCreateInstance(dropdownToggleEl);
-    });
+    dropdownElementList.map(dropdownToggleEl => Dropdown.getOrCreateInstance(dropdownToggleEl));
+    
     const offcanvasElementList = [].slice.call(document.querySelectorAll('.offcanvas'));
-    offcanvasElementList.map(function (offcanvasEl) {
-        return Offcanvas.getOrCreateInstance(offcanvasEl);
-    });
+    offcanvasElementList.map(offcanvasEl => Offcanvas.getOrCreateInstance(offcanvasEl));
   }, [location]);
 
-  // 5. ADD THE LOGOUT HANDLER FUNCTION
-  const handleLogout = async () => {
+  // 1. LOGOUT HANDLER (This function is correct)
+  // It calls the logout function from your context and redirects the user.
+  const handleLogout = async (e) => {
+    e.preventDefault(); // Prevent the default link behavior
     try {
         await logout();
         // Redirect to the login page after a successful logout
@@ -62,7 +61,9 @@ function AdminLayout() {
           <h5 className="offcanvas-title fw-bold">HYJAIN Admin</h5>
           <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#adminSidebar" aria-label="Close"></button>
         </div>
-        <div className="offcanvas-body">
+        
+        {/* The offcanvas-body needs to be a flex container to push the logout button to the bottom */}
+        <div className="offcanvas-body d-flex flex-column">
           <nav className="nav flex-column">
             {visibleNavItems.map(item => (
               <NavLink key={item.name} to={item.path} className="nav-link">
@@ -71,6 +72,15 @@ function AdminLayout() {
               </NavLink>
             ))}
           </nav>
+
+          {/* 2. ADD THE LOGOUT BUTTON HERE */}
+          {/* We use an <a> tag and an onClick handler. It's placed after the main nav. */}
+          <div className="mt-auto"> {/* This div with margin-top: auto pushes the button to the bottom */}
+            <a href="#" onClick={handleLogout} className="nav-link logout-link">
+              <i className="bi bi-box-arrow-right me-2"></i>
+              Logout
+            </a>
+          </div>
         </div>
       </div>
 
@@ -83,7 +93,6 @@ function AdminLayout() {
             <h4 className="mb-0 d-none d-md-block">Admin Panel</h4>
           </div>
 
-          {/* 6. REPLACE THE STATIC HEADER WITH THE DYNAMIC DROPDOWN */}
           <div className="d-flex align-items-center">
             <span className="me-3 d-none d-sm-inline">Welcome, {currentUser?.displayName || userRole}!</span>
             <div className="dropdown">
@@ -92,8 +101,9 @@ function AdminLayout() {
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                   <li>
+                      {/* This dropdown logout button also works correctly now */}
                       <button className="dropdown-item" onClick={handleLogout}>
-                          <i className="bi bi-box-arrow-right me-2"></i>Logout
+                          <i className="bi bi-box-arrow-right me-2 "></i>Logout
                       </button>
                   </li>
               </ul>
