@@ -15,24 +15,35 @@ import 'swiper/css/pagination';
 import "./Shop.css";
 
 const GstUpdateSection = ({ pdfUrl }) => {
-  if (!pdfUrl) {
-    return null;
-  }
+  // If no PDF URL is provided, don't render the section
+  if (!pdfUrl) return null;
+
   return (
-     <section className="container my-5 py-5 text-center">
-                <div className="animate-on-scroll fade-in">
-                    <h2 className="fw-bold text-success mb-3">GST Revision Pricing Update - Hyjain</h2>
-                    <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
-                        We welcome the recently announced NextGen GST reform and believe that it will truly benefit the entire nation. In line with our commitment, we will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025. Please click on the link to access the complete pricing list.
-                    </p>
-                    <a href={hyjainPdf} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-lg fw-bold px-5 mt-4">
-                        Complete List of Reduced Pricing
-                    </a>
-                </div>
-              </section>
+    <section className="container my-5 py-5 text-center">
+      <div className="animate-on-scroll fade-in">
+        <h2 className="fw-bold text-success mb-3">
+          GST Revision Pricing Update – HYJAIN
+        </h2>
+        <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
+          We welcome the recently announced NextGen GST reform and believe it will bring positive benefits across the nation. 
+          In line with our commitment, HYJAIN will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025.
+        </p>
+        <div className="mt-4">
+          <a
+            href={pdfUrl}
+            download="HYJAIN_Pricing_Update_2025.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-success btn-lg fw-bold px-5"
+          >
+            <i className="bi bi-download me-2"></i>
+            Download Updated Pricing List
+          </a>
+        </div>
+      </div>
+    </section>
   );
 };
-
 const MarqueeSection = () => (
   <section className="marquee-section">
     <div className="marquee-content">

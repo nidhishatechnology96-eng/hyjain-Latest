@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
-import { db } from "../firebase";
+import { db } from "../firebase"; // Ensure this path is correct for your project
 import {
     collection,
     addDoc,
@@ -15,14 +15,14 @@ import {
     getDocs,
     setDoc
 } from "firebase/firestore";
-import { AuthContext, getRole } from "../context/AuthContext";
+import { AuthContext, getRole } from "../context/AuthContext"; // Ensure this path is correct
 
 export const AdminContext = createContext();
 
 export default function AdminProvider({ children }) {
     const { currentUser } = useContext(AuthContext);
 
-    // State declarations (no changes needed)
+    // State declarations (no changes)
     const [products, setProducts] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -35,18 +35,18 @@ export default function AdminProvider({ children }) {
     const [siteSettings, setSiteSettings] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
-    // This useEffect for general data fetching is correct and remains the same
+    // useEffect for data fetching (no changes)
     useEffect(() => {
         setIsLoading(true);
         const unsubscribers = [];
 
-        // --- PUBLIC DATA (Always fetch this data for anyone visiting the site) ---
+        // --- PUBLIC DATA ---
         unsubscribers.push(onSnapshot(doc(db, "siteSettings", "config"), (doc) => { setSiteSettings(doc.exists() ? doc.data() : {}); }));
         unsubscribers.push(onSnapshot(collection(db, "products"), (snapshot) => { setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
         unsubscribers.push(onSnapshot(query(collection(db, "categories"), orderBy("name")), (snapshot) => { setCategories(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
         unsubscribers.push(onSnapshot(query(collection(db, "shopSlideshow"), orderBy("createdAt", "desc")), (snapshot) => { setSlideshowImages(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
         
-        // --- AUTHORIZED DATA (Only fetch if the user is logged in with a specific role) ---
+        // --- AUTHORIZED DATA ---
         if (currentUser) {
             const userRole = getRole(currentUser);
             const isAuthorized = ['admin', 'staff', 'delivery'].includes(userRole);
@@ -80,24 +80,49 @@ export default function AdminProvider({ children }) {
         };
     }, [currentUser]);
 
+    // --- DATA MUTATION FUNCTIONS ---
     
-    // --- START OF THE FIX ---
-    // The `useCallback` hook is added here. It ensures the `getCategoryByName` function
-    // doesn't get recreated on every render, which stops the infinite loop on CategoryPage.
+    // ✅ --- START OF FIX ---
+    // This is the rewritten, robust function that fixes the error.
+    const updateSiteSetting = async (key, value) => {
+        // Step 1: Prevent saving undefined values. This is the core of the fix.
+        if (value === undefined) {
+            console.error(`ERROR: Attempted to update setting '${key}' with an undefined value. Operation cancelled.`);
+            // Throw an error to let the calling component know something went wrong.
+            throw new Error(`Cannot save an undefined value for setting: ${key}. The upload might have failed.`);
+        }
+
+        const settingsRef = doc(db, "siteSettings", "config");
+
+        try {
+            // Step 2: Use setDoc with merge:true to safely update only the specified field.
+            await setDoc(settingsRef, { [key]: value }, { merge: true });
+
+            // Step 3: After the database is successfully updated, update the local React state.
+            setSiteSettings(prevSettings => ({
+                ...prevSettings,
+                [key]: value
+            }));
+            
+            console.log(`Setting '${key}' was successfully updated in Firebase.`);
+
+        } catch (error) {
+            console.error(`Firebase Error: Failed to update setting '${key}'.`, error);
+            // Re-throw the error so the component's .catch() block can see it.
+            throw error;
+        }
+    };
+    // ✅ --- END OF FIX ---
+
+
+    // --- Other functions (no changes) ---
     const getCategoryByName = useCallback(async (name) => {
         const categoriesRef = collection(db, "categories");
         const q = query(categoriesRef, where("name", "==", name));
         const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-            const doc = querySnapshot.docs[0];
-            return { id: doc.id, ...doc.data() };
-        }
+        if (!querySnapshot.empty) { const doc = querySnapshot.docs[0]; return { id: doc.id, ...doc.data() }; }
         return null;
-    }, []); // The empty dependency array `[]` is the most important part of this fix.
-    // --- END OF THE FIX ---
-
-    
-    // --- DATA MUTATION FUNCTIONS (No changes needed) ---
+    }, []);
     const updateUserRole = (userId, newRole) => updateDoc(doc(db, "users", userId), { role: newRole });
     const addProduct = (product) => addDoc(collection(db, "products"), product);
     const updateProduct = (productId, updatedProduct) => updateDoc(doc(db, "products", productId), updatedProduct);
@@ -107,7 +132,6 @@ export default function AdminProvider({ children }) {
     const deleteCategory = (id) => deleteDoc(doc(db, "categories", id));
     const addSlideshowImage = (imageData) => addDoc(collection(db, "shopSlideshow"), { ...imageData, createdAt: new Date() });
     const deleteSlideshowImage = (id) => deleteDoc(doc(db, "shopSlideshow", id));
-    const updateSiteSetting = (key, value) => setDoc(doc(db, "siteSettings", "config"), { [key]: value }, { merge: true });
     const addOrder = async (orderData) => { const docRef = await addDoc(collection(db, "orders"), orderData); return docRef.id; };
     const updateOrderStatus = (orderId, status) => updateDoc(doc(db, "orders", orderId), { status, updatedAt: new Date(), lastStatusUpdate: new Date() });
     const markProductAsReviewed = (orderId, productId) => updateDoc(doc(db, "orders", orderId), { reviewedProducts: arrayUnion(productId) });
@@ -123,18 +147,18 @@ export default function AdminProvider({ children }) {
     const getOrderById = async (orderId) => { const orderDocRef = doc(db, "orders", orderId); const orderSnap = await getDoc(orderDocRef); return orderSnap.exists() ? { id: orderSnap.id, ...orderSnap.data() } : null; };
     const listenToUserOrders = useCallback((userId, callback) => { if (!userId) return () => { }; const q = query(collection(db, "orders"), where("userId", "==", userId), orderBy("createdAt", "desc")); return onSnapshot(q, (snapshot) => callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))); }, []);
 
+    // Context value provided to children
     const contextValue = {
         products, orders, categories, reviews, users, helpMessages, getInTouchMessages, slideshowImages, siteSettings, isLoading, subscribers,
         addProduct, updateProduct, deleteProduct,
         addCategory, updateCategory, deleteCategory,
         addSlideshowImage, deleteSlideshowImage,
-        updateSiteSetting, updateUserRole,
+        updateSiteSetting, updateUserRole, // Now includes the fixed function
         addOrder, updateOrderStatus, getOrderById, listenToUserOrders,
         addReview, markProductAsReviewed, deleteReview,
         addHelpMessage, markHelpMessageAsRead, deleteHelpMessage,
         addGetInTouchMessage, markGetInTouchMessageAsRead, deleteGetInTouchMessage,
         deleteSubscriber,
-        // Expose the now-stable function
         getCategoryByName
     };
 

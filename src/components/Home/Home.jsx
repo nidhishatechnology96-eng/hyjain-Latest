@@ -10,7 +10,7 @@ import fruitCategoryImg from '../../assets/Fruits.jpg';
 import spicesCategoryImg from '../../assets/spices.jpg';
 import waterCategoryImg from '../../assets/water.png';
 import heroVideo from "../../assets/hero-video.mp4";
-import hyjainPdf from '../Home/hyjain.pdf';
+
 
 const useScrollAnimation = () => {
     useEffect(() => {
@@ -26,7 +26,7 @@ const useScrollAnimation = () => {
 };
 
 function Home() {
-  const { products } = useContext(AdminContext);
+  const { products,siteSettings } = useContext(AdminContext);
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
   useScrollAnimation();
 
@@ -166,17 +166,22 @@ function Home() {
               </div>
           </section>
 
-          <section className="container my-5 py-5 text-center">
-            <div className="animate-on-scroll fade-in">
-                <h2 className="fw-bold text-success mb-3">GST Revision Pricing Update - Hyjain</h2>
-                <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
-                    We welcome the recently announced NextGen GST reform and believe that it will truly benefit the entire nation. In line with our commitment, we will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025. Please click on the link to access the complete pricing list.
-                </p>
-                <a href={hyjainPdf} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-lg fw-bold px-5 mt-4">
-                    Complete List of Reduced Pricing
-                </a>
-            </div>
-          </section>
+          {/* --- DYNAMIC GST PRICING SECTION --- */}
+          {/* This entire section will only appear if a PDF URL is set in the admin panel */}
+          {siteSettings && siteSettings.pricingPdfUrl && (
+            <section className="container my-5 py-5 text-center">
+              <div className="animate-on-scroll fade-in">
+                  <h2 className="fw-bold text-success mb-3">GST Revision Pricing Update - Hyjain</h2>
+                  <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
+                      We welcome the recently announced NextGen GST reform and believe that it will truly benefit the entire nation. In line with our commitment, we will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025. Please click on the link to access the complete pricing list.
+                  </p>
+                  {/* ✅ FIX: Use the dynamic URL from the context */}
+                  <a href={siteSettings.pricingPdfUrl} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-lg fw-bold px-5 mt-4">
+                      Complete List of Reduced Pricing
+                  </a>
+              </div>
+            </section>
+          )}
 
           <section className="py-5 bg-light-gradient">
             <div className="container">

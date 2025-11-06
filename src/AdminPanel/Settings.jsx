@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { AdminContext } from './AdminContext';
-
 import api from '../api';
 
 function Settings() {
@@ -14,8 +13,10 @@ function Settings() {
     const [logoFile, setLogoFile] = useState(null);
     const [isLogoUploading, setIsLogoUploading] = useState(false);
 
+    // State for the alert system
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' });
 
+    // Helper function to show alerts temporarily
     const showAlert = (message, type = 'success') => {
         setAlert({ show: true, message, type });
         setTimeout(() => setAlert({ show: false, message: '', type: '' }), 4000);
@@ -36,27 +37,26 @@ function Settings() {
             const formData = new FormData();
             formData.append('image', logoFile);
             
-            // Uses the same image upload endpoint as other parts of the admin panel
             const res = await api.post('/api/upload-image', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            // Update the 'logoUrl' setting in Firebase with the new URL
             await updateSiteSetting('logoUrl', res.data.imageUrl);
             showAlert('Site logo updated successfully!');
             
-            setLogoFile(null); // Clear the file input
+            setLogoFile(null);
             document.getElementById('logo-upload').value = null;
 
         } catch (error) {
             console.error("Error uploading logo:", error);
-            showAlert('Failed to upload logo. Please check your backend server.', 'danger');
+            const errorMessage = error.response?.data?.error || 'Failed to upload logo. Please check the server logs.';
+            showAlert(errorMessage, 'danger');
         } finally {
             setIsLogoUploading(false);
         }
     };
 
-    // --- PDF HANDLERS ---
+    // --- PDF HANDLERS (CORRECTED) ---
     const handlePdfFileChange = (e) => {
         setPdfFile(e.target.files[0]);
     };
@@ -75,13 +75,17 @@ function Settings() {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
-            await updateSiteSetting('pricingPdfUuid', res.data.fileUUID);
+            // ✅ FIX: Use 'fileUrl' from the backend response and update 'pricingPdfUrl'.
+            await updateSiteSetting('pricingPdfUrl', res.data.fileUrl);
+            
             showAlert('Pricing PDF updated successfully!');
             setPdfFile(null);
             document.getElementById('pdf-upload').value = null;
         } catch (error) {
             console.error("Error uploading PDF:", error);
-            showAlert('Failed to upload PDF. Please check your backend server.', 'danger');
+            // Improved error handling shows the specific server error
+            const errorMessage = error.response?.data?.error || 'Failed to upload PDF. Please check the server logs.';
+            showAlert(errorMessage, 'danger');
         } finally {
             setIsPdfUploading(false);
         }
@@ -96,17 +100,17 @@ function Settings() {
             )}
             <h1 className="h3 mb-4 text-gray-800">Site Settings</h1>
 
-            {/* NEW: Site Logo Management Card */}
+            {/* Site Logo Management Card */}
             <div className="card shadow-sm mb-4">
                 <div className="card-header">
                     <h5 className="mb-0">Site Logo</h5>
                 </div>
                 <div className="card-body">
-                    <p className="card-text">Upload a new logo for the navigation bar and footer. Recommended size: 150x50 pixels.</p>
+                    <p className="card-text">Upload a new logo for the navigation bar. Recommended size: 150x50 pixels.</p>
                      <div className="row align-items-center">
                         <div className="col-md-8">
                             <div className="input-group">
-                                <input type="file" className="form-control" id="logo-upload" onChange={handleLogoFileChange} accept="image/png, image/jpeg, image/svg+xml" />
+                                <input type="file" className="form-control" id="logo-upload" onChange={handleLogoFileChange} accept="image/png, image/jpeg, image/svg+xml, image/webp" />
                                 <button className="btn btn-primary" onClick={handleLogoUpload} disabled={isLogoUploading}>
                                     {isLogoUploading ? 'Uploading...' : 'Upload & Save'}
                                 </button>
@@ -129,7 +133,7 @@ function Settings() {
                 </div>
             </div>
 
-            {/* Existing GST Pricing PDF Card */}
+            {/* GST Pricing PDF Card (CORRECTED) */}
             <div className="card shadow-sm">
                 <div className="card-header">
                     <h5 className="mb-0">GST Pricing PDF</h5>
@@ -145,10 +149,11 @@ function Settings() {
                     {isLoading ? (
                         <div className="mt-3"><div className="spinner-border spinner-border-sm"></div></div>
                     ) : (
-                        siteSettings.pricingPdfUuid && (
+                        // ✅ FIX: Check for 'pricingPdfUrl' and use it as the href.
+                        siteSettings.pricingPdfUrl && (
                             <div className="mt-3">
                                 <p className="mb-1"><strong>Current PDF Link:</strong></p>
-                                <a href={`https://ucarecdn.com/${siteSettings.pricingPdfUuid}/`} target="_blank" rel="noopener noreferrer">
+                                <a href={siteSettings.pricingPdfUrl} target="_blank" rel="noopener noreferrer">
                                     View Current PDF
                                 </a>
                             </div>
