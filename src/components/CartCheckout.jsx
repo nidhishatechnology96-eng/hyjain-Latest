@@ -112,44 +112,79 @@ function CartCheckout() {
 
   return (
     <div className="d-flex flex-column min-vh-100" style={{ backgroundColor: '#f8f9fa' }}>
-      <div className="container my-5">
-        <h2 className="mb-4">Your Shopping Cart</h2>
-        <div className="row">
-          <div className="col-lg-8">
-            {cart.map((item) => (
-              <div key={item.id} className="card shadow-sm border-0 mb-3">
-                <div className="card-body">
-                  <div className="d-flex align-items-center">
-                    <img src={(item.images && item.images[0]) || item.image} alt={item.name} className="img-fluid rounded" style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
-                    <div className="ms-3 flex-grow-1">
-                      <h6 className="mb-1">{item.name}</h6>
-                      <small className="text-muted">Price: ₹{item.price.toFixed(2)}</small>
+            <div className="container my-5">
+                <h2 className="mb-4">Your Shopping Cart</h2>
+                <div className="row g-4">
+                    {/* --- LEFT COLUMN: CART ITEMS --- */}
+                    <div className="col-lg-8">
+                        {cart.length === 0 ? (
+                            <div className="card shadow-sm border-0">
+                                <div className="card-body text-center p-4">
+                                    <h5 className="card-title">Your Cart is Empty</h5>
+                                    <p className="card-text text-muted">Looks like you haven't added anything yet.</p>
+                                    <Link to="/shop" className="btn btn-primary mt-3">
+                                        <i className="bi bi-arrow-left me-2"></i>Continue Shopping
+                                    </Link>
+                                </div>
+                            </div>
+                        ) : (
+                            cart.map((item) => (
+                                <div key={item.id} className="card shadow-sm border-0 mb-3">
+                                    <div className="card-body p-3 p-md-4">
+                                        <div className="row g-3 align-items-center">
+                                            {/* Column 1: Image & Product Info */}
+                                            <div className="col-12 col-md-5 d-flex align-items-center">
+                                                <img 
+                                                    src={(item.images && item.images[0]) || item.image} 
+                                                    alt={item.name} 
+                                                    className="img-fluid rounded" 
+                                                    style={{ width: '80px', height: '80px', objectFit: 'cover' }} 
+                                                />
+                                                <div className="ms-3">
+                                                    <h6 className="mb-1">{item.name}</h6>
+                                                    <small className="text-muted">Price: ₹{item.price.toFixed(2)}</small>
+                                                </div>
+                                            </div>
+                                            {/* Column 2: Quantity Controls */}
+                                            <div className="col-6 col-md-3">
+                                                <div className="d-flex align-items-center justify-content-start justify-content-md-center">
+                                                    <button className="btn btn-sm btn-outline-secondary" onClick={() => decrementQty(item.id)}>-</button>
+                                                    <input
+                                                        type="number"
+                                                        value={item.quantity || 1}
+                                                        onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
+                                                        className="form-control form-control-sm text-center"
+                                                        style={{ width: '60px', margin: '0 8px' }}
+                                                        aria-label="Item quantity"
+                                                    />
+                                                    <button className="btn btn-sm btn-outline-secondary" onClick={() => incrementQty(item.id)}>+</button>
+                                                </div>
+                                            </div>
+                                            {/* Column 3: Subtotal & Remove Button */}
+                                            <div className="col-6 col-md-4 d-flex align-items-center justify-content-end">
+                                                <h6 className="mb-0 me-3" style={{width: '90px', textAlign: 'right'}}>
+                                                    ₹{(item.price * (item.quantity || 1)).toFixed(2)}
+                                                </h6>
+                                                <button className="btn btn-sm btn-danger" onClick={() => removeFromCart(item.id)} aria-label="Remove item">
+                                                    <i className="bi bi-trash-fill"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                        {cart.length > 0 && (
+                            <div className="mt-3 d-flex justify-content-between align-items-center">
+                               <Link to="/shop" className="btn btn-outline-secondary">
+                                    <i className="bi bi-arrow-left me-2"></i>Continue Shopping
+                                </Link>
+                                <button className="btn btn-outline-danger" onClick={clearCart}>
+                                    <i className="bi bi-x-lg me-2"></i>Clear Cart
+                                </button>
+                            </div>
+                        )}
                     </div>
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => decrementQty(item.id)}>-</button>
-                      <input
-                        type="number"
-                        value={item.quantity || 1}
-                        onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 1)}
-                        className="form-control form-control-sm text-center"
-                        style={{ width: '80px', margin: '0 10px' }}
-                      />
-                      <button className="btn btn-sm btn-outline-secondary" onClick={() => incrementQty(item.id)}>+</button>
-                    </div>
-                    <div className="mx-4 text-end" style={{ width: '120px' }}>
-                      <h6 className="mb-0">₹{(item.price * (item.quantity || 1)).toFixed(2)}</h6>
-                    </div>
-                    <button className="btn btn-sm btn-danger" onClick={() => removeFromCart(item.id)}>
-                      <i className="bi bi-trash-fill"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="mt-3 text-end">
-              <button className="btn btn-outline-danger" onClick={clearCart}>Clear Cart</button>
-            </div>
-          </div>
 
           <div className="col-lg-4 mt-4 mt-lg-0">
             <div className="card border-0 shadow-sm">
