@@ -41,6 +41,10 @@ function AdminLayout() {
     { path: '/admin/orders', icon: 'bi-cart3', name: 'Orders', roles: ['admin', 'staff', 'delivery'] },
     { path: '/admin/categories', icon: 'bi-tags', name: 'Categories', roles: ['admin', 'staff'] },
     { path: '/admin/category-carousels', icon: 'bi-collection-play-fill', name: 'Category Carousels', roles: ['admin', 'staff'] },
+
+
+    { path: '/admin/homepage-carousel', icon: 'bi-film', name: 'Homepage Carousel', roles: ['admin'] },
+    
     { path: '/admin/users', icon: 'bi-people', name: 'Users', roles: ['admin'] },
     { path: '/admin/reviews', icon: 'bi-star', name: 'Reviews', roles: ['admin'] },
     { path: '/admin/help-messages', icon: 'bi-envelope', name: 'Help Messages', roles: ['admin'] }, 

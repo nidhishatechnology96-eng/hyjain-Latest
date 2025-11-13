@@ -1,90 +1,102 @@
-// src/AdminPanel/Review.jsx
+import React, { useContext } from 'react';
+import { AdminContext } from './AdminContext'; // Make sure this path is correct
 
-import React, { useContext } from "react";
-import { Link } from 'react-router-dom';
-import { AdminContext } from "./AdminContext"; 
-// ✅ FIX: Removed the import for the missing image file.
-
-// Star display component
-const StarDisplay = ({ rating }) => (
-  <span className="text-warning">{'★'.repeat(rating)}{'☆'.repeat(5 - rating)}</span>
-);
-
-const Review = () => {
-  // Get reviews and delete function from the context
-  const { reviews, deleteReview, isLoading } = useContext(AdminContext);
-  
-  // Handle the delete action
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to permanently delete this review?")) {
-      deleteReview(id);
+// A small helper component to display stars visually
+const StarRating = ({ rating }) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+        stars.push(
+            <span key={i} className={i <= rating ? 'text-warning' : 'text-muted'}>
+                &#9733;
+            </span>
+        );
     }
-  };
-  
-  // Display a loader while data is being fetched
-  if (isLoading) return <div className="text-center p-5"><div className="spinner-border"></div></div>;
+    return <div>{stars}</div>;
+};
 
-  return (
-    <div className="container-fluid p-4">
-      <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
-        <h2 className="mb-0">Customer Reviews Management</h2>
-        <span className="badge bg-primary rounded-pill fs-6">{reviews?.length || 0} Total Reviews</span>
-      </div>
+// This is your main Admin Panel component for managing reviews
+const Review = () => {
+    // 1. Get BOTH 'reviews' and 'products' from the context. This is the key.
+    const { reviews, products, deleteReview, isLoading } = useContext(AdminContext);
 
-      {!reviews || reviews.length === 0 ? (
-        <div className="text-center p-5 mt-5 bg-light border rounded-3">
-          {/* ✅ FIX: Replaced the missing <img> with a Bootstrap Icon */}
-          <i 
-            className="bi bi-chat-quote text-muted mb-4" 
-            style={{ fontSize: '72px', opacity: 0.7 }}
-          ></i>
-          <h4>No reviews found.</h4>
-          <p className="text-muted mt-2">When customers submit reviews, they will appear here for management.</p>
+    const handleDelete = (reviewId) => {
+        if (window.confirm("Are you sure you want to delete this review? This action cannot be undone.")) {
+            deleteReview(reviewId);
+        }
+    };
+
+    if (isLoading) {
+        return <div className="text-center p-5"><div className="spinner-border"></div></div>;
+    }
+
+    return (
+        <div className="container-fluid p-4">
+            {/* --- Header Section --- */}
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="h4 mb-0">Customer Reviews Management</h2>
+                <span className="badge bg-primary rounded-pill fs-6">
+                    {reviews.length} Total Reviews
+                </span>
+            </div>
+
+            {/* --- Reviews Table --- */}
+            <div className="card border-0 shadow-sm">
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-hover align-middle">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>User</th>
+                                    <th>Product</th>
+                                    <th>Rating</th>
+                                    <th style={{ minWidth: '300px' }}>Comment</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {reviews.length > 0 ? (
+                                    reviews.map(review => {
+                                        // 2. For each review, find the matching product using the productId.
+                                        const product = products.find(p => p.id === review.productId);
+
+                                        return (
+                                            <tr key={review.id}>
+                                                <td>{review.userEmail || review.email || 'N/A'}</td>
+                                                <td>
+                                                    {/* 3. Display the product's name if found, otherwise show a fallback. */}
+                                                    {product ? product.name : (review.productId === 'General' ? 'General Feedback' : 'Product not found')}
+                                                </td>
+                                                <td>
+                                                    <StarRating rating={review.rating} />
+                                                </td>
+                                                <td>{review.comment}</td>
+                                                <td>
+                                                    {review.createdAt?.toDate ? new Date(review.createdAt.toDate()).toLocaleDateString() : 'N/A'}
+                                                </td>
+                                                <td>
+                                                    <button 
+                                                        className="btn btn-outline-danger btn-sm"
+                                                        onClick={() => handleDelete(review.id)}
+                                                    >
+                                                        <i className="bi bi-trash-fill me-1"></i> Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan="6" className="text-center p-4">No reviews have been submitted yet.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      ) : (
-        <div className="table-responsive card shadow-sm">
-          <table className="table table-hover align-middle mb-0">
-            <thead className="table-dark">
-              <tr>
-                <th scope="col">User</th>
-                <th scope="col">Product</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Comment</th>
-                <th scope="col">Date</th>
-                <th className="text-end">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reviews.map((review) => (
-                <tr key={review.id}>
-                  <td>{review.userEmail || 'N/A'}</td>
-                  <td>
-                    {review.product ? (
-                      <Link to={`/product/${review.productId}`}>{review.productName}</Link>
-                    ) : (
-                      'Product not found'
-                    )}
-                  </td>
-                  <td><StarDisplay rating={review.rating} /></td>
-                  <td style={{ minWidth: '250px' }}>"{review.comment}"</td>
-                  <td>{new Date(review.createdAt.seconds * 1000).toLocaleDateString()}</td>
-                  <td className="text-end">
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDelete(review.id)}
-                      title="Delete Review"
-                    >
-                      <i className="bi bi-trash"></i> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Review;

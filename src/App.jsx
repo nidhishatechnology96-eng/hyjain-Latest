@@ -10,6 +10,7 @@ import AuthProvider from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import AdminProvider from "./AdminPanel/AdminContext";
 
+
 // Import Layout Components
 import Navbar from "./components/Navbar/Navbar";
 import HomeFooter from './components/Homefooter/HomeFooter';
@@ -51,6 +52,9 @@ import RefundPolicy from './components/InfoPage/RefundPolicy';
 import ShippingFeesandDelivery from './components/InfoPage/ShippingFeesandDelivery';
 import TermsAndConditions from './components/InfoPage/TermsAndConditions';
 import TrackOrder from './components/InfoPage/TrackOrder';
+
+
+
 
 
 
@@ -116,6 +120,7 @@ function AppLayout() {
           <Route path="/category/:categoryName" element={<CategoryPage />} />
           <Route path="/subcategory/:subCategoryName" element={<SubCategoryPage />} /> {/* Corrected path parameter */}
           
+           
         </Routes>
       </main>
 

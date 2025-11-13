@@ -4,6 +4,9 @@ import { AdminContext } from './AdminContext';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+
+import CarouselManager from './CarouselManager';
+
 // Register the components Chart.js needs
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -151,6 +154,7 @@ function Dashboard() {
                         <p className="text-center text-muted m-4">No sales data from delivered orders yet to generate a chart.</p>
                     )}
                 </div>
+                
             </div>
         </div>
       </div>

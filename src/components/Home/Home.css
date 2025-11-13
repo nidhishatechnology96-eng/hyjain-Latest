@@ -721,3 +721,172 @@ body {
 .row.justify-content-center {
   padding-bottom: 2rem; /* Adds some space below the cards */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =======================================================
+   ⭐ PERFECT HERO SECTION (Desktop + Mobile)
+   ======================================================= */
+
+/* Main container */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 60vh;           /* Good default height */
+  min-height: 330px;
+  max-height: 680px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #000;
+  margin: 12px auto;
+}
+
+/* Fix Bootstrap collapse issue */
+.hero-section .carousel-inner {
+  height: 100%;
+}
+
+/* Each slide */
+.hero-section .carousel-item {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Picture wrapper */
+.hero-section picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* Actual image */
+.hero-section img.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* PERFECT FIT */
+  object-position: center;   /* CENTER CROP */
+  display: block;
+}
+
+/* Dark gradient overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.12),
+    rgba(0,0,0,0.45)
+  );
+  z-index: 1;
+}
+
+/* Caption content */
+.carousel-caption {
+  z-index: 5;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+}
+
+/* Title */
+.carousel-caption h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Subtitle */
+.carousel-caption p {
+  color: #fff;
+  opacity: 0.95;
+  font-size: 1.1rem;
+  margin-top: 6px;
+}
+
+/* Button */
+.carousel-caption .btn {
+  margin-top: 12px;
+  padding: 10px 28px;
+  font-size: 0.95rem;
+  border-radius: 30px;
+}
+
+/* Arrows */
+.carousel-control-prev,
+.carousel-control-next {
+  z-index: 10;
+  width: 12%;
+}
+
+/* Indicators */
+.carousel-indicators {
+  bottom: 10px;
+}
+
+/* =======================================================
+   📱 MOBILE VIEW (PHONE)
+   ======================================================= */
+@media (max-width: 767px) {
+  
+  .hero-section {
+    height: 55vh;        /* Shorter mobile hero */
+    min-height: 300px;
+  }
+
+  .carousel-caption {
+    bottom: 12%;
+    width: 94%;
+  }
+
+  .carousel-caption h1 {
+    font-size: 1.3rem;
+  }
+
+  .carousel-caption p {
+    font-size: 0.9rem;
+  }
+
+  .carousel-caption .btn {
+    padding: 8px 18px;
+    font-size: 0.8rem;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 16%;
+  }
+}
+
+/* =======================================================
+   💻 TABLET VIEW
+   ======================================================= */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  .hero-section {
+    height: 60vh;
+  }
+
+  .carousel-caption h1 {
+    font-size: 1.8rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1.05rem;
+  }
+}

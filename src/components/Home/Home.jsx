@@ -1,3 +1,5 @@
+// src/pages/Home/Home.jsx
+
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,24 +11,22 @@ import vegCategoryImg from '../../assets/veg.jpg';
 import fruitCategoryImg from '../../assets/Fruits.jpg';
 import spicesCategoryImg from '../../assets/spices.jpg';
 import waterCategoryImg from '../../assets/water.png';
-import heroVideo from "../../assets/hero-video.mp4";
-
 
 const useScrollAnimation = () => {
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('is-visible');
-            });
-        }, { threshold: 0.1 });
-        const elements = document.querySelectorAll('.animate-on-scroll');
-        elements.forEach(el => observer.observe(el));
-        return () => elements.forEach(el => observer.unobserve(el));
-    }, []);
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.1 });
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    elements.forEach(el => observer.observe(el));
+    return () => elements.forEach(el => observer.unobserve(el));
+  }, []);
 };
 
 function Home() {
-  const { products,siteSettings } = useContext(AdminContext);
+  const { products, siteSettings, carouselItems, isLoading } = useContext(AdminContext);
   const { cart, addToCart, removeFromCart } = useContext(CartContext);
   useScrollAnimation();
 
@@ -43,26 +43,72 @@ function Home() {
     { name: "Amit Patel", role: "Farming Operations Lead", img: "https://randomuser.me/api/portraits/men/14.jpg", bio: "Amit works with our partner farms, championing sustainable agriculture and ensuring the finest produce." },
     { name: "Sunita Reddy", role: "Customer Relations", img: "https://randomuser.me/api/portraits/women/15.jpg", bio: "Sunita is dedicated to ensuring a delightful experience and building lasting relationships with our community." }
   ];
-  
+
+  const renderHeroSection = () => {
+    if (isLoading) {
+      return (
+        <header className="hero-section" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="spinner-border text-white" style={{ width: '3rem', height: '3rem' }}></div>
+        </header>
+      );
+    }
+
+    const validCarouselItems = carouselItems
+      ? carouselItems.filter(slide => slide.desktopImageUrl || slide.mobileImageUrl)
+      : [];
+
+
+    if (validCarouselItems.length > 0) {
+      return (
+        <header id="homepageHeroCarousel" className="carousel slide hero-section" data-bs-ride="carousel">
+          <div className="carousel-indicators">
+            {validCarouselItems.map((_, index) => (
+              <button key={index} type="button" data-bs-target="#homepageHeroCarousel" data-bs-slide-to={index} className={index === 0 ? 'active' : ''} aria-current={index === 0 ? 'true' : 'false'} aria-label={`Slide ${index + 1}`}></button>
+            ))}
+          </div>
+          <div className="carousel-inner">
+            {validCarouselItems.map((slide, index) => (
+              <div key={slide.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                <picture>
+                  {slide.desktopImageUrl && (
+                    <source media="(min-width: 768px)" srcSet={slide.desktopImageUrl} />
+                  )}
+
+                  <img
+                    src={slide.mobileImageUrl || slide.desktopImageUrl || "/fallback.jpg"}
+                    className="d-block w-100 hero-image"
+                    alt={slide.title}
+                  />
+
+                </picture>
+                <div className="hero-overlay"></div>
+
+                <div className="carousel-caption">
+                  <h1 className="display-2 fw-bolder animate-on-scroll fade-in-down">{slide.title}</h1>
+                  {slide.subtitle && <p className="lead mt-3 fs-4 animate-on-scroll fade-in-down" style={{ animationDelay: '0.3s' }}>{slide.subtitle}</p>}
+                  <Link to="/shop" className="btn btn-gradient-primary btn-lg mt-4 fw-bold animate-on-scroll fade-in-up" style={{ animationDelay: '0.6s' }}>
+                    {slide.buttonText}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="carousel-control-prev" type="button" data-bs-target="#homepageHeroCarousel" data-bs-slide="prev"><span className="carousel-control-prev-icon" aria-hidden="true"></span><span className="visually-hidden">Previous</span></button>
+          <button className="carousel-control-next" type="button" data-bs-target="#homepageHeroCarousel" data-bs-slide="next"><span className="carousel-control-next-icon" aria-hidden="true"></span><span className="visually-hidden">Next</span></button>
+        </header>
+      );
+    }
+
+    // If there are no slides and it's not loading, return null to show nothing.
+    return null;
+  };
+
   return (
     <div className="home-page">
       <div className="animated-background"></div>
       <div className="page-content">
-        <header className="hero-section">
-          <video className="hero-video" autoPlay loop muted playsInline key={heroVideo}>
-            <source src={heroVideo} type="video/mp4" />
-          </video>
-          <div className="hero-overlay"></div>
-          <div className="hero-content text-center text-white">
-            <h1 className="display-2 fw-bolder animate-on-scroll fade-in-down">Pure. Fresh. HYJAIN.</h1>
-            <p className="lead mt-3 fs-4 animate-on-scroll fade-in-down" style={{animationDelay: '0.3s'}}>
-              Bringing the essence of nature, from our farms to your family.
-            </p>
-            <Link to="/shop" className="btn btn-gradient-primary btn-lg mt-4 fw-bold animate-on-scroll fade-in-up" style={{animationDelay: '0.6s'}}>
-              Explore Our Collection
-            </Link>
-          </div>
-        </header>
+
+        {renderHeroSection()}
 
         <main>
           <section className="story-section py-5 my-5">
@@ -97,21 +143,21 @@ function Home() {
               <p className="text-muted mt-2 fs-5">Quality and trust, delivered.</p>
             </div>
             <div className="row text-center g-4">
-              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{animationDelay: '0.1s'}}>
+              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{ animationDelay: '0.1s' }}>
                 <div className="feature-card quality-card h-100 p-4">
                   <div className="feature-icon-wrapper quality-icon"><i className="bi bi-patch-check-fill"></i></div>
                   <h4 className="fw-bold">Quality Assured</h4>
                   <p className="text-muted">Rigorously tested products sourced from the finest farms to ensure premium quality.</p>
                 </div>
               </div>
-              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{animationDelay: '0.3s'}}>
+              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{ animationDelay: '0.3s' }}>
                 <div className="feature-card delivery-card h-100 p-4">
                   <div className="feature-icon-wrapper delivery-icon"><i className="bi bi-truck"></i></div>
                   <h4 className="fw-bold">Fast Delivery</h4>
                   <p className="text-muted">Your orders are delivered fresh and on time, every single time, maintaining product integrity.</p>
                 </div>
               </div>
-              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{animationDelay: '0.5s'}}>
+              <div className="col-lg-4 col-md-6 animate-on-scroll fade-in-up" style={{ animationDelay: '0.5s' }}>
                 <div className="feature-card organic-card h-100 p-4">
                   <div className="feature-icon-wrapper organic-icon"><i className="bi bi-award-fill"></i></div>
                   <h4 className="fw-bold">Organic & Fresh</h4>
@@ -133,7 +179,7 @@ function Home() {
                     <Link to="/shop" state={{ category: category.linkState }} className="text-decoration-none">
                       <div className="category-wrapper">
                         <div className="category-card">
-                          <img src={category.img} alt={category.name} className="category-img"/>
+                          <img src={category.img} alt={category.name} className="category-img" />
                           <div className="category-overlay">
                             <h4 className="category-title">{category.name}</h4>
                           </div>
@@ -147,38 +193,35 @@ function Home() {
           </section>
 
           <section className="commitment-section py-5 my-5">
-              <div className="container">
-                <div className="text-center mb-5 animate-on-scroll fade-in">
-                    <h2 className="display-5 fw-bold">Our <span style={{ color: '#943894ff' }}>Commitment</span></h2>
-                    <p className="text-muted mt-2 fs-5">Beyond products, we believe in principles.</p>
+            <div className="container">
+              <div className="text-center mb-5 animate-on-scroll fade-in">
+                <h2 className="display-5 fw-bold">Our <span style={{ color: '#943894ff' }}>Commitment</span></h2>
+                <p className="text-muted mt-2 fs-5">Beyond products, we believe in principles.</p>
+              </div>
+              <div className="row g-4">
+                <div className="Sustainability col-lg-4 animate-on-scroll fade-in-up" style={{ animationDelay: '0.1s' }}>
+                  <div className=" commitment-card p-4 h-100 text-center"><div className="commitment-icon text-success mb-3"><i className="bi bi-tree-fill"></i></div><h4 className="fw-bold">Sustainability</h4><p className="text-muted">From eco-friendly packaging to supporting sustainable farming, we are dedicated to protecting our planet.</p></div>
                 </div>
-                <div className="row g-4">
-                    <div className="Sustainability col-lg-4 animate-on-scroll fade-in-up" style={{animationDelay: '0.1s'}}>
-                        <div className=" commitment-card p-4 h-100 text-center"><div className="commitment-icon text-success mb-3"><i className="bi bi-tree-fill"></i></div><h4 className="fw-bold">Sustainability</h4><p className="text-muted">From eco-friendly packaging to supporting sustainable farming, we are dedicated to protecting our planet.</p></div>
-                    </div>
-                    <div className="Community col-lg-4 animate-on-scroll fade-in-up" style={{animationDelay: '0.3s'}}>
-                        <div className="commitment-card p-4 h-100 text-center"><div className="commitment-icon text-primary mb-3"><i className="bi bi-people-fill"></i></div><h4 className="fw-bold">Community</h4><p className="text-muted">We empower local farming communities by ensuring fair prices and fostering long-term partnerships.</p></div>
-                    </div>
-                    <div className="Health col-lg-4 animate-on-scroll fade-in-up" style={{animationDelay: '0.5s'}}>
-                        <div className="commitment-card p-4 h-100 text-center"><div className="commitment-icon text-danger mb-3"><i className="bi bi-heart-fill"></i></div><h4 className="fw-bold">Health & Purity</h4><p className="text-muted">Your well-being is our priority. We guarantee products free from artificial additives and preservatives.</p></div>
-                    </div>
+                <div className="Community col-lg-4 animate-on-scroll fade-in-up" style={{ animationDelay: '0.3s' }}>
+                  <div className="commitment-card p-4 h-100 text-center"><div className="commitment-icon text-primary mb-3"><i className="bi bi-people-fill"></i></div><h4 className="fw-bold">Community</h4><p className="text-muted">We empower local farming communities by ensuring fair prices and fostering long-term partnerships.</p></div>
+                </div>
+                <div className="Health col-lg-4 animate-on-scroll fade-in-up" style={{ animationDelay: '0.5s' }}>
+                  <div className="commitment-card p-4 h-100 text-center"><div className="commitment-icon text-danger mb-3"><i className="bi bi-heart-fill"></i></div><h4 className="fw-bold">Health & Purity</h4><p className="text-muted">Your well-being is our priority. We guarantee products free from artificial additives and preservatives.</p></div>
                 </div>
               </div>
+            </div>
           </section>
 
-          {/* --- DYNAMIC GST PRICING SECTION --- */}
-          {/* This entire section will only appear if a PDF URL is set in the admin panel */}
           {siteSettings && siteSettings.pricingPdfUrl && (
             <section className="container my-5 py-5 text-center">
               <div className="animate-on-scroll fade-in">
-                  <h2 className="fw-bold text-success mb-3">GST Revision Pricing Update - Hyjain</h2>
-                  <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
-                      We welcome the recently announced NextGen GST reform and believe that it will truly benefit the entire nation. In line with our commitment, we will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025. Please click on the link to access the complete pricing list.
-                  </p>
-                  {/* ✅ FIX: Use the dynamic URL from the context */}
-                  <a href={siteSettings.pricingPdfUrl} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-lg fw-bold px-5 mt-4">
-                      Complete List of Reduced Pricing
-                  </a>
+                <h2 className="fw-bold text-success mb-3">GST Revision Pricing Update - Hyjain</h2>
+                <p className="text-muted mx-auto" style={{ maxWidth: '800px' }}>
+                  We welcome the recently announced NextGen GST reform and believe that it will truly benefit the entire nation. In line with our commitment, we will be passing on this benefit through revised, lower MRPs on the applicable product range, effective 22nd September 2025. Please click on the link to access the complete pricing list.
+                </p>
+                <a href={siteSettings.pricingPdfUrl} target="_blank" rel="noopener noreferrer" className="btn btn-success btn-lg fw-bold px-5 mt-4">
+                  Complete List of Reduced Pricing
+                </a>
               </div>
             </section>
           )}
@@ -193,14 +236,11 @@ function Home() {
                 {teamMembers.map((member, index) => (
                   <div key={member.name} className="col-lg-3 col-md-6 animate-on-scroll fade-in-up" style={{ animationDelay: `${index * 0.15}s` }}>
                     <div className="team-member-card text-center">
-                      
-                      {/* CHANGE 1: Use the member's image from the array */}
-                      <img 
-                        src={member.img} 
-                        alt={member.name} // CHANGE 2: Use the member's name for the alt text
-                        className="team-img" 
+                      <img
+                        src={member.img}
+                        alt={member.name}
+                        className="team-img"
                       />
-
                       <div className="team-card-body">
                         <h4 className="fw-bold mb-1">{member.name}</h4>
                         <p className="team-role mb-3">{member.role}</p>
@@ -216,12 +256,12 @@ function Home() {
               </div>
             </div>
           </section>
-          
+
           <section className="review-cta py-5 my-5">
             <div className="container text-center text-white">
               <h2 className="display-6 fw-bold mb-3 animate-on-scroll fade-in">Have thoughts about HYJAIN?</h2>
-              <p className="lead mb-4 animate-on-scroll fade-in" style={{animationDelay: '0.2s'}}>Share your experience and help others choose better.</p>
-              <Link to="/reviews" className="btn btn-light btn-lg fw-bold px-5 animate-on-scroll fade-in-up" style={{animationDelay: '0.4s'}}>Write a Review</Link>
+              <p className="lead mb-4 animate-on-scroll fade-in" style={{ animationDelay: '0.2s' }}>Share your experience and help others choose better.</p>
+              <Link to="/reviews" className="btn btn-light btn-lg fw-bold px-5 animate-on-scroll fade-in-up" style={{ animationDelay: '0.4s' }}>Write a Review</Link>
             </div>
           </section>
         </main>

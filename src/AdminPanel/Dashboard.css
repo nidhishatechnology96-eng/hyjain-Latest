@@ -1,0 +1,70 @@
+/* src/AdminPanel/Dashboard.css */
+
+.admin-stat-card {
+  border: none;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.admin-stat-card .card-body {
+  padding: 1.5rem;
+}
+
+.admin-stat-card .stat-icon {
+  font-size: 2.5rem;
+  opacity: 0.7;
+}
+
+.admin-stat-card .card-footer {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.admin-stat-card .card-footer a {
+  text-decoration: none;
+  color: #6c757d;
+}
+
+.admin-stat-card .card-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Card background colors */
+.bg-primary-light { background-color: #e7f1ff; }
+.bg-warning-light { background-color: #fff8e1; }
+.bg-success-light { background-color: #e6f6e6; }
+.bg-danger-light  { background-color: #fdeaea; }
+
+/* Text colors */
+.text-primary { color: #0d6efd !important; }
+.text-warning { color: #ffc107 !important; }
+.text-success { color: #198754 !important; }
+.text-danger  { color: #dc3545 !important; }
+
+/* Status Badges for Orders */
+.badge {
+  padding: 0.4em 0.7em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  color: #fff;
+}
+
+.status-pending { background-color: #ffc107; color: #000; }
+.status-processing { background-color: #0d6efd; }
+.status-shipped { background-color: #0dcaf0; }
+.status-delivered { background-color: #198754; }
+.status-cancelled { background-color: #dc3545; }
+
+/* Recent Orders Table */
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+}

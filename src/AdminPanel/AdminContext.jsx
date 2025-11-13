@@ -1,5 +1,7 @@
+// src/AdminPanel/AdminContext.jsx
+
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
-import { db } from "../firebase"; // Ensure this path is correct for your project
+import { db } from "../firebase";
 import {
     collection,
     addDoc,
@@ -13,16 +15,17 @@ import {
     onSnapshot,
     getDoc,
     getDocs,
-    setDoc
+    setDoc,
+    serverTimestamp
 } from "firebase/firestore";
-import { AuthContext, getRole } from "../context/AuthContext"; // Ensure this path is correct
+import { AuthContext, getRole } from "../context/AuthContext";
 
 export const AdminContext = createContext();
 
 export default function AdminProvider({ children }) {
     const { currentUser } = useContext(AuthContext);
 
-    // State declarations (no changes)
+    // --- STATE DECLARATIONS ---
     const [products, setProducts] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -35,7 +38,10 @@ export default function AdminProvider({ children }) {
     const [siteSettings, setSiteSettings] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
-    // useEffect for data fetching (no changes)
+    // ✅ NEW STATE: For the homepage carousel items from Firebase
+    const [carouselItems, setCarouselItems] = useState([]);
+
+    // --- DATA FETCHING EFFECT ---
     useEffect(() => {
         setIsLoading(true);
         const unsubscribers = [];
@@ -45,6 +51,12 @@ export default function AdminProvider({ children }) {
         unsubscribers.push(onSnapshot(collection(db, "products"), (snapshot) => { setProducts(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
         unsubscribers.push(onSnapshot(query(collection(db, "categories"), orderBy("name")), (snapshot) => { setCategories(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
         unsubscribers.push(onSnapshot(query(collection(db, "shopSlideshow"), orderBy("createdAt", "desc")), (snapshot) => { setSlideshowImages(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }));
+        
+        // ✅ FETCH CAROUSEL ITEMS: Listen for real-time updates from Firebase
+        const carouselQuery = query(collection(db, "homepageCarousel"), orderBy("createdAt", "asc"));
+        unsubscribers.push(onSnapshot(carouselQuery, (snapshot) => {
+            setCarouselItems(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+        }));
         
         // --- AUTHORIZED DATA ---
         if (currentUser) {
@@ -82,40 +94,40 @@ export default function AdminProvider({ children }) {
 
     // --- DATA MUTATION FUNCTIONS ---
     
-    // ✅ --- START OF FIX ---
-    // This is the rewritten, robust function that fixes the error.
+    // ✅ NEW FUNCTIONS: To manage carousel items in Firebase
+    const addCarouselItem = (itemData) => {
+        return addDoc(collection(db, "homepageCarousel"), {
+            ...itemData,
+            createdAt: serverTimestamp() // Adds a server-side timestamp
+        });
+    };
+    
+    // ✅ FIX: Added the missing updateCarouselItem function
+    const updateCarouselItem = (itemId, updatedData) => {
+        const itemDoc = doc(db, "homepageCarousel", itemId);
+        return updateDoc(itemDoc, updatedData);
+    };
+
+    const deleteCarouselItem = (itemId) => {
+        return deleteDoc(doc(db, "homepageCarousel", itemId));
+    };
+
+    // --- OTHER FUNCTIONS ---
     const updateSiteSetting = async (key, value) => {
-        // Step 1: Prevent saving undefined values. This is the core of the fix.
         if (value === undefined) {
             console.error(`ERROR: Attempted to update setting '${key}' with an undefined value. Operation cancelled.`);
-            // Throw an error to let the calling component know something went wrong.
             throw new Error(`Cannot save an undefined value for setting: ${key}. The upload might have failed.`);
         }
-
         const settingsRef = doc(db, "siteSettings", "config");
-
         try {
-            // Step 2: Use setDoc with merge:true to safely update only the specified field.
             await setDoc(settingsRef, { [key]: value }, { merge: true });
-
-            // Step 3: After the database is successfully updated, update the local React state.
-            setSiteSettings(prevSettings => ({
-                ...prevSettings,
-                [key]: value
-            }));
-            
-            console.log(`Setting '${key}' was successfully updated in Firebase.`);
-
+            setSiteSettings(prevSettings => ({ ...prevSettings, [key]: value }));
         } catch (error) {
             console.error(`Firebase Error: Failed to update setting '${key}'.`, error);
-            // Re-throw the error so the component's .catch() block can see it.
             throw error;
         }
     };
-    // ✅ --- END OF FIX ---
-
-
-    // --- Other functions (no changes) ---
+    
     const getCategoryByName = useCallback(async (name) => {
         const categoriesRef = collection(db, "categories");
         const q = query(categoriesRef, where("name", "==", name));
@@ -123,6 +135,7 @@ export default function AdminProvider({ children }) {
         if (!querySnapshot.empty) { const doc = querySnapshot.docs[0]; return { id: doc.id, ...doc.data() }; }
         return null;
     }, []);
+    
     const updateUserRole = (userId, newRole) => updateDoc(doc(db, "users", userId), { role: newRole });
     const addProduct = (product) => addDoc(collection(db, "products"), product);
     const updateProduct = (productId, updatedProduct) => updateDoc(doc(db, "products", productId), updatedProduct);
@@ -147,19 +160,23 @@ export default function AdminProvider({ children }) {
     const getOrderById = async (orderId) => { const orderDocRef = doc(db, "orders", orderId); const orderSnap = await getDoc(orderDocRef); return orderSnap.exists() ? { id: orderSnap.id, ...orderSnap.data() } : null; };
     const listenToUserOrders = useCallback((userId, callback) => { if (!userId) return () => { }; const q = query(collection(db, "orders"), where("userId", "==", userId), orderBy("createdAt", "desc")); return onSnapshot(q, (snapshot) => callback(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))); }, []);
 
-    // Context value provided to children
+    // --- CONTEXT VALUE ---
     const contextValue = {
+        // States
         products, orders, categories, reviews, users, helpMessages, getInTouchMessages, slideshowImages, siteSettings, isLoading, subscribers,
+        carouselItems, // ✅ Export new state
+        // Functions
         addProduct, updateProduct, deleteProduct,
         addCategory, updateCategory, deleteCategory,
         addSlideshowImage, deleteSlideshowImage,
-        updateSiteSetting, updateUserRole, // Now includes the fixed function
+        updateSiteSetting, updateUserRole,
         addOrder, updateOrderStatus, getOrderById, listenToUserOrders,
         addReview, markProductAsReviewed, deleteReview,
         addHelpMessage, markHelpMessageAsRead, deleteHelpMessage,
         addGetInTouchMessage, markGetInTouchMessageAsRead, deleteGetInTouchMessage,
         deleteSubscriber,
-        getCategoryByName
+        getCategoryByName,
+        addCarouselItem, deleteCarouselItem, updateCarouselItem, // ✅ FIX: Exported the new function
     };
 
     return (

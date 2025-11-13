@@ -1,3 +1,5 @@
+// src/AdminPanel/Admin.jsx
+
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -15,12 +17,12 @@ import SubscribersManagement from "./SubscribersManagement";
 import SlideshowManagement from "./SlideshowManagement";
 import Settings from "./Settings";
 import Reports from "./Reports";
-
 import CategoryCarouselManagement from "./CategoryCarouselManagement";
+import CarouselManager from "./CarouselManager"; // ✅ 1. IMPORT THE COMPONENT
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RoleBasedRoute = ({ allowedRoles, children }) => {
-    const { userRole } = useContext(AuthContext); // Use the role from context
+    const { userRole } = useContext(AuthContext);
 
     if (!allowedRoles.includes(userRole)) {
         switch(userRole) {
@@ -35,7 +37,7 @@ const RoleBasedRoute = ({ allowedRoles, children }) => {
 };
 
 const RoleBasedIndexRedirect = () => {
-    const { userRole } = useContext(AuthContext); // Use the role from context
+    const { userRole } = useContext(AuthContext);
     
     switch(userRole) {
         case 'admin':
@@ -66,11 +68,11 @@ function Admin() {
         <Route path="reports" element={ <RoleBasedRoute allowedRoles={['admin']}><Reports /></RoleBasedRoute> } />
         <Route path="slideshow" element={ <RoleBasedRoute allowedRoles={['admin']}><SlideshowManagement /></RoleBasedRoute> } />
         <Route path="settings" element={ <RoleBasedRoute allowedRoles={['admin']}><Settings /></RoleBasedRoute> } />
-
-
-
-          <Route path="category-carousels" element={ <RoleBasedRoute allowedRoles={['admin', 'staff']}><CategoryCarouselManagement /></RoleBasedRoute> } />
+        <Route path="category-carousels" element={ <RoleBasedRoute allowedRoles={['admin', 'staff']}><CategoryCarouselManagement /></RoleBasedRoute> } />
       
+        {/* ✅ 2. ADD THE ROUTE FOR THE HOMEPAGE CAROUSEL */}
+        <Route path="homepage-carousel" element={ <RoleBasedRoute allowedRoles={['admin']}><CarouselManager /></RoleBasedRoute> } />
+
       </Route>
     </Routes>
   );

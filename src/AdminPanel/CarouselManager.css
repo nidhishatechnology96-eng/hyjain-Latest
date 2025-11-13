@@ -1,0 +1,119 @@
+/* src/AdminPanel/components/CarouselManager.css */
+
+.carousel-manager {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    font-family: sans-serif;
+}
+
+.carousel-manager h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.manager-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.manager-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Important for padding */
+}
+
+.btn-add-slide {
+    background-color: #28a745;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.btn-add-slide:hover {
+    background-color: #218838;
+}
+
+.slide-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.slide-item:last-child {
+    border-bottom: none;
+}
+
+.slide-preview img,
+.slide-preview video {
+    border-radius: 4px;
+    object-fit: cover;
+    display: block;
+}
+
+.slide-details {
+    flex-grow: 1;
+}
+
+.slide-details strong {
+    font-size: 1.1rem;
+}
+
+.slide-details span {
+    font-size: 0.8rem;
+    color: #777;
+    margin-left: 0.5rem;
+    text-transform: capitalize;
+}
+
+.slide-details p {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: #666;
+    word-break: break-all;
+}
+
+.btn-remove-slide {
+    background-color: #dc3545;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-remove-slide:hover {
+    background-color: #c82333;
+}
