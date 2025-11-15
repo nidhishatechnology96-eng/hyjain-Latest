@@ -58,14 +58,18 @@ function Home() {
         console.log("✅ API Response received:", response.data);
         // Check if response has data and it's not an error object
         if (response.data && !response.data.error && Object.keys(response.data).length > 0) {
-          // Validate that we have the required fields
-          if (response.data.title && response.data.subtitle && response.data.paragraph) {
-            console.log("✅ Using API data for Our Story");
-            setStoryContent(response.data);
-          } else {
-            console.warn("⚠️ API returned incomplete 'Our Story' data. Displaying fallback content.");
-            setStoryContent(fallbackStoryContent);
-          }
+          // Merge API data with fallback to ensure all fields are present
+          const mergedData = {
+            title: response.data.title || fallbackStoryContent.title,
+            subtitle: response.data.subtitle || fallbackStoryContent.subtitle,
+            paragraph: response.data.paragraph || fallbackStoryContent.paragraph,
+            imageUrl: response.data.imageUrl || fallbackStoryContent.imageUrl,
+            bulletPoints: (response.data.bulletPoints && Array.isArray(response.data.bulletPoints) && response.data.bulletPoints.length > 0) 
+              ? response.data.bulletPoints 
+              : fallbackStoryContent.bulletPoints
+          };
+          console.log("✅ Using API data for Our Story (merged with fallback):", mergedData);
+          setStoryContent(mergedData);
         } else {
           // If API returns nothing or error object, use the fallback data.
           console.warn("⚠️ API returned no 'Our Story' data. Displaying fallback content.");
@@ -122,9 +126,9 @@ function Home() {
               <div key={slide.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                 <picture>
                   {slide.desktopImageUrl && <source media="(min-width: 768px)" srcSet={slide.desktopImageUrl} />}
-                  <img src={slide.mobileImageUrl || slide.desktopImageUrl || "/fallback.jpg"} className="d-block w-100 hero-.jsx" alt={slide.title} />
+                  <img src={slide.mobileImageUrl || slide.desktopImageUrl || "/fallback.jpg"} className="d-block w-100 hero-image" alt={slide.title} />
                 </picture>
-                <div className="hero-overlay"></div>
+                
                 <div className="carousel-caption">
                   <h1 className="display-2 fw-bolder animate-on-scroll fade-in-down">{slide.title}</h1>
                   {slide.subtitle && <p className="lead mt-3 fs-4 animate-on-scroll fade-in-down" style={{ animationDelay: '0.3s' }}>{slide.subtitle}</p>}
@@ -176,7 +180,14 @@ function Home() {
               </div>
             </div>
             <div className="col-lg-6 animate-on-scroll slide-in-right">
-              <span className="badge-hyjain">{content.title || fallbackStoryContent.title}</span>
+              {(() => {
+                const titleText = (content.title && content.title.trim()) || (fallbackStoryContent.title && fallbackStoryContent.title.trim()) || "Our Story";
+                return (
+                  <span className="badge-hyjain" style={{ display: 'inline-block', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: '600' }}>
+                    {titleText}
+                  </span>
+                );
+              })()}
               <h2 className="display-4 fw-bold mt-3 mb-2" dangerouslySetInnerHTML={{ __html: content.subtitle || fallbackStoryContent.subtitle }}></h2>
               <p className="text-muted lead mb-3">{content.paragraph || fallbackStoryContent.paragraph}</p>
               <div className="story-divider my-4"></div>

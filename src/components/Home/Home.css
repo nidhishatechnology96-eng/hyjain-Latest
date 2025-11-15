@@ -241,30 +241,41 @@ body {
 .category-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+  /* background: linear-gradient(to top, rgba(25, 0, 0, 0.8) 0%, transparent 60%); */
   display: flex;
   align-items: flex-end;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 1.5rem;
   text-align: left;
   z-index: 4;
   border-radius: 20px;
+  color: #fff;
 }
 
 /* === Title Text === */
 .category-title {
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.5rem;
-  transform: translateY(10px);
-  opacity: 0.9;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  /* Ensure title is always white and on top of overlays/shine */
+  color: #ffffff !important;
+  position: relative;    /* so z-index applies */
+  z-index: 6 !important; /* above pseudo-elements */
+  text-shadow: 0 4px 12px rgba(0,0,0,0.6); /* improve readability */
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0.5rem 0;
 }
 
-.category-wrapper:hover .category-title {
-  transform: translateY(0);
-  opacity: 1;
+/* If the title is an <a> or inside a link, force that too */
+.category-title a {
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+/* make overlay slightly darker at bottom only if needed for contrast */
+/* optional — keep or remove depending on desired look */
+.category-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.0) 60%);
+  z-index: 4;
 }
 
 /* === Animation on Scroll (Optional Fade-in) === */
@@ -788,8 +799,8 @@ body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.12),
-    rgba(0,0,0,0.45)
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0)
   );
   z-index: 1;
 }
@@ -986,3 +997,9 @@ body {
   margin-right: 0.75rem;
   flex-shrink: 0; /* Prevents the icon from shrinking */
 }
+
+
+
+
+
+
