@@ -1,0 +1,177 @@
+/* src/AdminPanel/OurStoryManagement.css */
+
+/* --- Main Container --- */
+.our-story-management {
+    /* Uses the full width available inside the admin content area */
+    max-width: 900px; /* Optional: Constrain width for very large screens */
+    margin: 0 auto; /* Center the container */
+    padding: 2rem;
+    background-color: #f8f9fa; /* A slightly softer white */
+}
+
+.our-story-management h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #343a40; /* Darker text for better contrast */
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* --- Form Styling --- */
+.our-story-form {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem; /* Slightly more space between sections */
+}
+
+/* --- Form Group & Labels --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+/* --- Inputs & Textareas --- */
+.form-group input[type="text"],
+.form-group textarea,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* --- Bullet Points Section --- */
+.bullet-point-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.bullet-point-item input {
+    flex-grow: 1;
+}
+
+.bullet-point-item button {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.bullet-point-item button:hover {
+    background-color: #c82333;
+}
+
+.bullet-point-item button:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+
+.add-bullet-btn {
+    background-color: #198754; /* Bootstrap success color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    align-self: flex-start; /* Keeps the button from stretching */
+    transition: background-color 0.2s;
+}
+.add-bullet-btn:hover {
+    background-color: #157347;
+}
+
+/* --- Image Preview Section --- */
+.image-preview-container {
+    margin-top: 1rem;
+}
+
+.image-preview-container p {
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+
+.image-preview {
+    max-width: 250px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    background-color: #f8f9fa;
+}
+
+/* --- Save Button --- */
+.save-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #0d6efd; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    align-self: flex-end; /* Pushes button to the right */
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #0b5ed7;
+}
+
+.save-btn:disabled {
+    background-color: #a0c9f7;
+    cursor: not-allowed;
+}
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+    .our-story-management {
+        padding: 1rem;
+    }
+    .our-story-form {
+        padding: 1.5rem;
+    }
+    .bullet-point-item {
+        flex-direction: column;
+        align-items: stretch; /* Make input and button full width */
+        gap: 0.5rem; /* Reduce gap on mobile */
+    }
+    .bullet-point-item button {
+        width: 100%;
+    }
+    .save-btn {
+        align-self: stretch; /* Make save button full width */
+    }
+}

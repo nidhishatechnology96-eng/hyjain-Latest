@@ -20,13 +20,10 @@ function AdminLayout() {
     offcanvasElementList.map(offcanvasEl => Offcanvas.getOrCreateInstance(offcanvasEl));
   }, [location]);
 
-  // 1. LOGOUT HANDLER (This function is correct)
-  // It calls the logout function from your context and redirects the user.
   const handleLogout = async (e) => {
-    e.preventDefault(); // Prevent the default link behavior
+    e.preventDefault();
     try {
         await logout();
-        // Redirect to the login page after a successful logout
         navigate('/login');
     } catch (error) {
         console.error("Failed to log out", error);
@@ -41,9 +38,11 @@ function AdminLayout() {
     { path: '/admin/orders', icon: 'bi-cart3', name: 'Orders', roles: ['admin', 'staff', 'delivery'] },
     { path: '/admin/categories', icon: 'bi-tags', name: 'Categories', roles: ['admin', 'staff'] },
     { path: '/admin/category-carousels', icon: 'bi-collection-play-fill', name: 'Category Carousels', roles: ['admin', 'staff'] },
-
-
     { path: '/admin/homepage-carousel', icon: 'bi-film', name: 'Homepage Carousel', roles: ['admin'] },
+    
+    // --- THIS IS THE NEW LINK YOU REQUESTED ---
+    // I have added it here, following your existing structure.
+    { path: '/admin/our-story', icon: 'bi-book-half', name: 'Our Story', roles: ['admin'] },
     
     { path: '/admin/users', icon: 'bi-people', name: 'Users', roles: ['admin'] },
     { path: '/admin/reviews', icon: 'bi-star', name: 'Reviews', roles: ['admin'] },
@@ -66,7 +65,6 @@ function AdminLayout() {
           <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#adminSidebar" aria-label="Close"></button>
         </div>
         
-        {/* The offcanvas-body needs to be a flex container to push the logout button to the bottom */}
         <div className="offcanvas-body d-flex flex-column">
           <nav className="nav flex-column">
             {visibleNavItems.map(item => (
@@ -77,9 +75,7 @@ function AdminLayout() {
             ))}
           </nav>
 
-          {/* 2. ADD THE LOGOUT BUTTON HERE */}
-          {/* We use an <a> tag and an onClick handler. It's placed after the main nav. */}
-          <div className="mt-auto"> {/* This div with margin-top: auto pushes the button to the bottom */}
+          <div className="mt-auto">
             <a href="#" onClick={handleLogout} className="nav-link logout-link">
               <i className="bi bi-box-arrow-right me-2"></i>
               Logout
@@ -105,7 +101,6 @@ function AdminLayout() {
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                   <li>
-                      {/* This dropdown logout button also works correctly now */}
                       <button className="dropdown-item" onClick={handleLogout}>
                           <i className="bi bi-box-arrow-right me-2 "></i>Logout
                       </button>

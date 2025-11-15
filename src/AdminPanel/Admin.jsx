@@ -18,7 +18,8 @@ import SlideshowManagement from "./SlideshowManagement";
 import Settings from "./Settings";
 import Reports from "./Reports";
 import CategoryCarouselManagement from "./CategoryCarouselManagement";
-import CarouselManager from "./CarouselManager"; // ✅ 1. IMPORT THE COMPONENT
+import CarouselManager from "./CarouselManager";
+import OurStoryManagement from "./OurStoryManagement"; // ✅ 1. IMPORT THE COMPONENT
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RoleBasedRoute = ({ allowedRoles, children }) => {
@@ -69,9 +70,10 @@ function Admin() {
         <Route path="slideshow" element={ <RoleBasedRoute allowedRoles={['admin']}><SlideshowManagement /></RoleBasedRoute> } />
         <Route path="settings" element={ <RoleBasedRoute allowedRoles={['admin']}><Settings /></RoleBasedRoute> } />
         <Route path="category-carousels" element={ <RoleBasedRoute allowedRoles={['admin', 'staff']}><CategoryCarouselManagement /></RoleBasedRoute> } />
-      
-        {/* ✅ 2. ADD THE ROUTE FOR THE HOMEPAGE CAROUSEL */}
         <Route path="homepage-carousel" element={ <RoleBasedRoute allowedRoles={['admin']}><CarouselManager /></RoleBasedRoute> } />
+
+        {/* ✅ 2. ADD THE ROUTE FOR "OUR STORY" MANAGEMENT */}
+        <Route path="our-story" element={ <RoleBasedRoute allowedRoles={['admin']}><OurStoryManagement /></RoleBasedRoute> } />
 
       </Route>
     </Routes>

@@ -890,3 +890,99 @@ body {
     font-size: 1.05rem;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================= */
+/* ---        Our Story Section Styles         --- */
+/* ============================================= */
+
+.story-section {
+  /* This class is mainly for semantic grouping and targeting.
+     Bootstrap's py-5 and my-5 handle the vertical spacing. */
+  overflow-x: hidden; /* Prevents horizontal scrollbars from animations */
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.story-image-wrapper {
+  position: relative;
+  /* The shadow and rounded corners are handled by Bootstrap's
+     .shadow-lg and .rounded-4 classes on the <img> tag. */
+}
+
+/* Custom styled badge for the "Our Story" title */
+.badge-hyjain {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #086600; /* Dark green text from your theme */
+  background-color: rgba(8, 102, 0, 0.1); /* Very light green background */
+  border: 1px solid rgba(8, 102, 0, 0.2);
+  border-radius: 50px; /* Pill shape */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* The colored span inside the h2 for "Family." */
+.story-section h2 span {
+  color: #973726ff;
+}
+
+/* Decorative divider line below the main paragraph */
+.story-divider {
+  width: 80px;
+  height: 3px;
+  background-color: #973726ff; /* Matches the color of the "Family." text */
+  border-radius: 2px;
+}
+
+/* Custom styling for the features checklist */
+.story-checklist {
+  list-style: none; /* Remove default bullet points */
+  padding-left: 0;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between list items */
+}
+
+.story-checklist li {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  color: #495057; /* Dark gray text */
+  font-weight: 500;
+}
+
+/* Styling for the checkmark icon */
+.story-checklist li .bi-check-circle-fill {
+  color: #198754; /* Bootstrap success green for the checkmark */
+  font-size: 1.4rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+}

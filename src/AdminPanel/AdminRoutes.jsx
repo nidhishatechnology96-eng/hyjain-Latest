@@ -18,6 +18,7 @@ import Enquiries from './GetInTouchMessages';
 import SubscribersManagement from './SubscribersManagement';
 import SlideshowManagement from './SlideshowManagement';
 import Settings from './Settings';
+import OurStoryManagement from './OurStoryManagement'; 
 
 function AdminRoutes() {
   return (
@@ -40,6 +41,7 @@ function AdminRoutes() {
       <Route path="subscribers" element={<SubscribersManagement />} />
       <Route path="slideshow" element={<SlideshowManagement />} />
       <Route path="settings" element={<Settings />} />
+        <Route path="our-story" element={<OurStoryManagement />} />
 
       {/* This acts as a fallback for any unmatched admin route, sending the user to the dashboard */}
       <Route path="*" element={<Navigate to="dashboard" replace />} />
